@@ -1,6 +1,8 @@
 import fs from 'fs';
 
 const payload = JSON.parse(fs.readFileSync('payload.json', 'utf8'));
+const logoBase64 = fs.readFileSync('logo.jpg').toString('base64');
+const logoDataUri = `data:image/jpeg;base64,${logoBase64}`;
 
 // Safe script closer for standalone vault generator
 const SAFE_CLOSING_SCRIPT = '<' + '/script>';
@@ -11,6 +13,7 @@ const html = `<!DOCTYPE html>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HTML Document Vault • Client-Side Cryptographic Enclave</title>
+  <link rel="icon" type="image/jpeg" href="${logoDataUri}">
   
   <!-- Typography: Plus Jakarta Sans & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -72,10 +75,36 @@ const html = `<!DOCTYPE html>
       margin: 0 auto;
     }
 
-    /* Header */
+    /* Header & Brand Logo */
     header {
       text-align: center;
       margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .brand-logo-wrap {
+      margin-bottom: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-logo {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.04);
+      border: 1px solid var(--border);
+      background: #FFFFFF;
+      object-fit: cover;
+      transition: transform 0.25s var(--spring), box-shadow 0.25s var(--spring);
+    }
+
+    .brand-logo:hover {
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     }
 
     .brand-pill {
@@ -1360,6 +1389,9 @@ const html = `<!DOCTYPE html>
     
     <!-- Top Header -->
     <header>
+      <div class="brand-logo-wrap">
+        <img src="${logoDataUri}" alt="HTML Document Vault Logo" class="brand-logo" width="54" height="54" />
+      </div>
       <div class="brand-pill">
         <span class="brand-dot"></span>
         <span>Web Cryptography API (Native Subsystem)</span>
