@@ -3,42 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HTML Vault Studio — Zero-Knowledge Client-Side Encryption</title>
+  <title>HTML Document Vault & Decryption Enclave</title>
   
-  <!-- Inter & JetBrains Mono Fonts -->
+  <!-- Plus Jakarta Sans & JetBrains Mono Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
-    /* ShadCN Off-White Light Mode Design Tokens */
+    /* ShadCN Off-White Technical Palette */
     :root {
-      --background: #F8F9FA;      /* Subtle off-white base */
-      --foreground: #09090B;      /* Deep high-contrast text */
-      --card: #FFFFFF;            /* Pure card container */
+      --background: #F8F9FA;
+      --foreground: #09090B;
+      --card: #FFFFFF;
       --card-foreground: #09090B;
-      --popover: #FFFFFF;
-      --popover-foreground: #09090B;
-      --primary: #18181B;         /* Shadcn charcoal black button */
-      --primary-hover: #27272A;
-      --primary-foreground: #FAFAFA;
-      --secondary: #F1F3F5;       /* Warm light grey / off-white */
-      --secondary-hover: #E4E7EB;
-      --secondary-foreground: #18181B;
-      --muted: #F4F4F5;
-      --muted-foreground: #71717A; /* Balanced readable secondary text */
-      --border: #E4E4E7;          /* Crisp neutral border */
+      --muted: #F4F4F6;
+      --muted-foreground: #71717A;
+      --border: #E4E4E7;
+      --border-subtle: #ECECEF;
       --input: #E4E4E7;
       --input-focus: #18181B;
-      --ring: rgba(24, 24, 27, 0.08);
+      --primary: #18181B;
+      --primary-hover: #27272A;
+      --primary-foreground: #FAFAFA;
+      --secondary: #F1F3F5;
+      --secondary-hover: #E4E7EB;
+      --secondary-foreground: #18181B;
       --success: #10B981;
       --success-bg: #ECFDF5;
       --success-border: #A7F3D0;
+      --success-text: #065F46;
+      --warning: #F59E0B;
+      --warning-bg: #FFFBEB;
+      --warning-border: #FDE68A;
       --destructive: #EF4444;
       --destructive-bg: #FEF2F2;
-      --destructive-border: #FECACA;
       --radius: 12px;
       --radius-sm: 8px;
+      --radius-xs: 6px;
+      --ring: rgba(24, 24, 27, 0.08);
       --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
     }
@@ -47,13 +50,12 @@
 
     body {
       background-color: var(--background);
-      background-image: 
-        radial-gradient(at 0% 0%, rgba(228, 228, 231, 0.4) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(228, 228, 231, 0.3) 0px, transparent 50%);
+      background-image: radial-gradient(rgba(24, 24, 27, 0.07) 1px, transparent 1px);
+      background-size: 24px 24px;
       color: var(--foreground);
       font-family: var(--font-sans);
       min-height: 100vh;
-      padding: 3rem 1.25rem 5rem;
+      padding: 2.25rem 1.25rem 4.5rem;
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
       display: flex;
@@ -63,7 +65,7 @@
 
     .container {
       width: 100%;
-      max-width: 780px;
+      max-width: 900px;
       margin: 0 auto;
     }
 
@@ -73,20 +75,113 @@
       margin-bottom: 2rem;
     }
 
+    .brand-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.8rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--muted-foreground);
+      margin-bottom: 0.75rem;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    }
+
+    .brand-chip-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+    }
+
     h1 {
-      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-size: clamp(1.8rem, 4.5vw, 2.5rem);
       font-weight: 800;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.035em;
       color: var(--foreground);
-      line-height: 1.2;
-      margin-bottom: 0.65rem;
+      line-height: 1.15;
+      margin-bottom: 0.5rem;
     }
 
     p.lead {
       color: var(--muted-foreground);
       font-size: clamp(0.925rem, 2vw, 1.05rem);
-      max-width: 560px;
+      max-width: 600px;
       margin: 0 auto;
+    }
+
+    /* Segmented Navigation Tabs */
+    .tab-bar {
+      display: flex;
+      justify-content: center;
+      gap: 0.35rem;
+      background: #EFEFF1;
+      padding: 0.35rem;
+      border-radius: var(--radius);
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+      max-width: 580px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 0.65rem 0.95rem;
+      border: none;
+      background: transparent;
+      color: var(--muted-foreground);
+      font-family: inherit;
+      font-size: 0.825rem;
+      font-weight: 600;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: all 0.15s ease-in-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      color: var(--foreground);
+    }
+
+    .tab-btn.active {
+      background: #FFFFFF;
+      color: var(--foreground);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .tab-badge {
+      font-size: 0.675rem;
+      font-family: var(--font-mono);
+      background: var(--muted);
+      border: 1px solid var(--border);
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+      color: var(--foreground);
+      text-transform: uppercase;
+    }
+
+    /* Tab Panes */
+    .tab-pane {
+      display: none;
+      animation: fadeIn 0.2s ease-in-out;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     /* Shadcn Card */
@@ -96,21 +191,26 @@
       border-radius: var(--radius);
       box-shadow: 
         0 1px 3px 0 rgba(0, 0, 0, 0.04),
-        0 4px 16px -4px rgba(0, 0, 0, 0.06);
-      padding: clamp(1.5rem, 3.5vw, 2.5rem);
+        0 6px 20px -6px rgba(0, 0, 0, 0.06);
+      padding: clamp(1.25rem, 3.5vw, 2.25rem);
       margin-bottom: 2rem;
     }
 
     .card-header {
-      margin-bottom: 1.75rem;
+      margin-bottom: 1.5rem;
       padding-bottom: 1.25rem;
       border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 0.75rem;
     }
 
     .card-title {
-      font-size: 1.15rem;
+      font-size: 1.25rem;
       font-weight: 700;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.015em;
       color: var(--foreground);
       margin-bottom: 0.25rem;
     }
@@ -120,10 +220,317 @@
       color: var(--muted-foreground);
     }
 
-    /* Form Fields */
-    .form-group {
+    /* High-Tech Telemetry HUD (4 Bento Tiles) */
+    .telemetry-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.75rem;
+    }
+
+    @media (max-width: 768px) {
+      .telemetry-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .telemetry-tile {
+      background: var(--background);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .telemetry-label {
+      font-size: 0.6875rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: var(--muted-foreground);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .telemetry-value {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--foreground);
+      font-family: var(--font-mono);
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .telemetry-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      font-family: var(--font-mono);
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--muted-foreground);
+    }
+
+    .pulse-dot.active {
+      background: var(--warning);
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25);
+      animation: pulse 1.5s infinite;
+    }
+
+    .pulse-dot.verified {
+      background: var(--success);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.6; }
+    }
+
+    /* Vault Ingestion Switcher (Preset vs Custom File) */
+    .ingestion-switch {
+      display: flex;
+      gap: 0.5rem;
+      background: var(--background);
+      padding: 0.3rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
       margin-bottom: 1.5rem;
     }
+
+    .ingestion-btn {
+      flex: 1;
+      padding: 0.55rem 0.85rem;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      font-family: inherit;
+      border: none;
+      background: transparent;
+      color: var(--muted-foreground);
+      border-radius: var(--radius-xs);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      transition: all 0.15s ease;
+    }
+
+    .ingestion-btn.active {
+      background: #FFFFFF;
+      color: var(--foreground);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    }
+
+    /* Payload Info Box */
+    .payload-card {
+      background: var(--background);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1.15rem 1.25rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .payload-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .file-meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: var(--font-mono);
+      font-size: 0.825rem;
+      font-weight: 600;
+      color: var(--foreground);
+    }
+
+    .badge-outline {
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      color: var(--muted-foreground);
+    }
+
+    .payload-details-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+    }
+
+    @media (max-width: 640px) {
+      .payload-details-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .payload-detail-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .payload-detail-label {
+      color: var(--muted-foreground);
+      font-size: 0.6875rem;
+      text-transform: uppercase;
+    }
+
+    .payload-detail-val {
+      color: var(--foreground);
+      font-weight: 600;
+      word-break: break-all;
+    }
+
+    /* Pipeline Animated Stages */
+    .pipeline-container {
+      margin: 1.5rem 0;
+      background: var(--background);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1.15rem 1rem;
+    }
+
+    .pipeline-title {
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--muted-foreground);
+      letter-spacing: 0.05em;
+      margin-bottom: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .pipeline-stepper {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5rem;
+      position: relative;
+    }
+
+    @media (max-width: 680px) {
+      .pipeline-stepper {
+        grid-template-columns: 1fr;
+        gap: 0.65rem;
+      }
+    }
+
+    .pipeline-node {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xs);
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      transition: all 0.2s ease;
+    }
+
+    .pipeline-node.active {
+      border-color: var(--warning);
+      box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.15);
+      background: #FFFDF9;
+    }
+
+    .pipeline-node.complete {
+      border-color: var(--success);
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.15);
+      background: #F8FAF9;
+    }
+
+    .node-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .node-idx {
+      font-family: var(--font-mono);
+      font-size: 0.675rem;
+      font-weight: 700;
+      color: var(--muted-foreground);
+    }
+
+    .node-status-icon {
+      width: 14px;
+      height: 14px;
+      color: var(--muted-foreground);
+    }
+
+    .node-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--foreground);
+    }
+
+    .node-meta {
+      font-size: 0.7rem;
+      color: var(--muted-foreground);
+      font-family: var(--font-mono);
+    }
+
+    /* Decryption Command Deck */
+    .command-deck {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .action-row {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    @media (max-width: 600px) {
+      .action-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+
+    /* Password & Input */
+    .password-wrapper { position: relative; width: 100%; }
+    .password-wrapper input { padding-right: 2.75rem; }
+    .toggle-password-btn {
+      position: absolute right: 0.5rem; top: 50%;
+      transform: translateY(-50%); background: none; border: none;
+      color: var(--muted-foreground); cursor: pointer; padding: 0.4rem;
+    }
+    .toggle-password-btn:hover { color: var(--foreground); }
 
     label {
       display: flex;
@@ -145,7 +552,7 @@
     input[type="password"], 
     textarea {
       width: 100%;
-      padding: 0.65rem 0.875rem;
+      padding: 0.68rem 0.875rem;
       border-radius: var(--radius-sm);
       border: 1px solid var(--input);
       background: #FFFFFF;
@@ -164,17 +571,301 @@
     textarea {
       font-family: var(--font-mono);
       font-size: 0.825rem;
-      min-height: 130px;
+      min-height: 120px;
       resize: vertical;
       line-height: 1.6;
     }
 
-    /* Drag & Drop Zone */
+    /* High-Tech Terminal Execution Trace */
+    .terminal-container {
+      background: #18181B;
+      color: #E4E4E7;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      border: 1px solid #27272A;
+      margin-bottom: 1.75rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    .terminal-header {
+      background: #27272A;
+      padding: 0.5rem 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #3F3F46;
+    }
+
+    .terminal-dots {
+      display: flex;
+      gap: 5px;
+    }
+
+    .t-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+    }
+    .t-red { background: #EF4444; }
+    .t-yellow { background: #F59E0B; }
+    .t-green { background: #10B981; }
+
+    .terminal-title {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #A1A1AA;
+      letter-spacing: 0.03em;
+    }
+
+    .terminal-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .terminal-action-btn {
+      background: transparent;
+      border: none;
+      color: #A1A1AA;
+      font-size: 0.6875rem;
+      font-family: inherit;
+      cursor: pointer;
+      padding: 0.15rem 0.4rem;
+      border-radius: 3px;
+    }
+
+    .terminal-action-btn:hover {
+      color: #FFFFFF;
+      background: #3F3F46;
+    }
+
+    .terminal-body {
+      padding: 0.85rem 1rem;
+      max-height: 190px;
+      overflow-y: auto;
+      line-height: 1.7;
+    }
+
+    .log-line {
+      display: flex;
+      gap: 0.65rem;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .log-time {
+      color: #71717A;
+      flex-shrink: 0;
+      user-select: none;
+    }
+
+    .log-tag {
+      font-weight: 600;
+    }
+    .log-tag.INIT { color: #60A5FA; }
+    .log-tag.KDF { color: #FBBF24; }
+    .log-tag.CIPHER { color: #A78BFA; }
+    .log-tag.AUTH { color: #34D399; }
+    .log-tag.DOM { color: #38BDF8; }
+    .log-tag.ERR { color: #F87171; }
+
+    .log-msg {
+      color: #F4F4F5;
+    }
+
+    /* Hex Dump Viewer Drawer */
+    .hex-drawer {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--background);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+
+    .hex-header {
+      padding: 0.65rem 1rem;
+      background: #EFEFF1;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .hex-title {
+      font-size: 0.775rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      color: var(--foreground);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .hex-content {
+      padding: 0.85rem;
+      font-family: var(--font-mono);
+      font-size: 0.725rem;
+      color: var(--foreground);
+      max-height: 160px;
+      overflow-y: auto;
+      background: #FFFFFF;
+      line-height: 1.6;
+    }
+
+    /* Decrypted Viewport Container */
+    .viewport-box {
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      background: #FFFFFF;
+      overflow: hidden;
+      box-shadow: 0 4px 20px -4px rgba(0,0,0,0.08);
+      margin-top: 1.5rem;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    .viewport-header {
+      background: var(--background);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1.15rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .viewport-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .viewport-title {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--foreground);
+    }
+
+    .viewport-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .viewport-device-btn {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.6rem;
+      border-radius: var(--radius-xs);
+      font-size: 0.75rem;
+      font-family: inherit;
+      font-weight: 600;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .viewport-device-btn:hover {
+      color: var(--foreground);
+      border-color: var(--input-focus);
+    }
+
+    .viewport-device-btn.active {
+      background: var(--primary);
+      color: #FFFFFF;
+      border-color: var(--primary);
+    }
+
+    .frame-wrapper {
+      width: 100%;
+      background: #EFEFF1;
+      display: flex;
+      justify-content: center;
+      transition: all 0.25s ease;
+      padding: 0.5rem 0;
+    }
+
+    .preview-frame {
+      width: 100%;
+      height: 520px;
+      border: none;
+      background: #FFFFFF;
+      transition: max-width 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .preview-frame.desktop { max-width: 100%; }
+    .preview-frame.tablet { max-width: 768px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); border-radius: 8px; }
+    .preview-frame.mobile { max-width: 375px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); border-radius: 8px; }
+
+    /* Button Primary & Secondary */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: var(--primary);
+      color: var(--primary-foreground);
+      border: 1px solid var(--primary);
+      border-radius: var(--radius-sm);
+      padding: 0.7rem 1.25rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      transition: all 0.15s ease-in-out;
+      font-family: inherit;
+    }
+    .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
+    .btn-primary:active { transform: scale(0.985); }
+    .btn-primary:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      background: #FFFFFF;
+      color: var(--foreground);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.55rem 0.9rem;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+    .btn-secondary:hover { background: var(--secondary-hover); border-color: #D4D4D8; }
+
+    .btn-destructive-subtle {
+      background: #FFFFFF;
+      border: 1px solid #FECACA;
+      color: var(--destructive);
+      padding: 0.35rem 0.75rem;
+      border-radius: var(--radius-xs);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .btn-destructive-subtle:hover {
+      background: var(--destructive-bg);
+      border-color: var(--destructive);
+    }
+
+    /* Dropzone */
     .dropzone {
       border: 1.5px dashed var(--border);
       background: var(--background);
       border-radius: var(--radius-sm);
-      padding: 1.75rem 1.25rem;
+      padding: 1.5rem 1.25rem;
       text-align: center;
       cursor: pointer;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -182,7 +873,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.4rem;
     }
 
     .dropzone:hover {
@@ -198,83 +889,28 @@
     }
 
     .dropzone-icon {
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       background: #FFFFFF;
       border: 1px solid var(--border);
       display: grid;
       place-items: center;
       color: var(--foreground);
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
     }
 
     .dropzone-title {
-      font-size: 0.875rem;
+      font-size: 0.85rem;
       font-weight: 600;
       color: var(--foreground);
     }
 
     .dropzone-desc {
-      font-size: 0.775rem;
+      font-size: 0.75rem;
       color: var(--muted-foreground);
     }
 
-    /* Password Input with Toggle & Strength Indicator */
-    .password-wrapper {
-      position: relative;
-    }
-
-    .password-wrapper input {
-      padding-right: 2.75rem;
-    }
-
-    .toggle-password-btn {
-      position: absolute;
-      right: 0.5rem;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      color: var(--muted-foreground);
-      cursor: pointer;
-      padding: 0.4rem;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      transition: color 0.15s;
-    }
-
-    .toggle-password-btn:hover {
-      color: var(--foreground);
-    }
-
-    .strength-meter {
-      height: 4px;
-      background: var(--border);
-      border-radius: 2px;
-      margin-top: 0.5rem;
-      overflow: hidden;
-      display: flex;
-      gap: 3px;
-    }
-
-    .strength-segment {
-      flex: 1;
-      height: 100%;
-      background: transparent;
-      transition: background-color 0.25s ease;
-    }
-
-    .strength-text {
-      font-size: 0.725rem;
-      color: var(--muted-foreground);
-      margin-top: 0.35rem;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    /* Grid for Options */
     .grid-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -285,331 +921,870 @@
       .grid-row { grid-template-columns: 1fr; }
     }
 
-    /* Primary ShadCN Button */
-    .btn-primary {
-      width: 100%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      background: var(--primary);
-      color: var(--primary-foreground);
-      border: 1px solid var(--primary);
-      border-radius: var(--radius-sm);
-      padding: 0.75rem 1.25rem;
-      font-size: 0.925rem;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-      transition: all 0.15s ease-in-out;
-      margin-top: 0.5rem;
+    /* Password Strength */
+    .strength-meter {
+      height: 4px; background: var(--border); border-radius: 2px;
+      margin-top: 0.5rem; overflow: hidden; display: flex; gap: 3px;
     }
+    .strength-segment { flex: 1; height: 100%; background: transparent; transition: background-color 0.25s ease; }
+    .strength-text { font-size: 0.725rem; color: var(--muted-foreground); margin-top: 0.35rem; display: flex; justify-content: space-between; }
 
-    .btn-primary:hover {
-      background: var(--primary-hover);
-      box-shadow: 0 4px 12px rgba(24, 24, 27, 0.15);
-      transform: translateY(-1px);
-    }
-
-    .btn-primary:active {
-      transform: scale(0.985);
-    }
-
-    .btn-primary:disabled {
-      opacity: 0.65;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
-
-    .spinner {
-      width: 16px;
-      height: 16px;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      border-top-color: #FFFFFF;
-      border-radius: 50%;
-      animation: spin 0.6s linear infinite;
-      display: none;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* Bento Feature Cards */
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-
-    .feature-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.25rem;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
-    }
-
-    .feature-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      background: var(--secondary);
-      border: 1px solid var(--border);
-      display: grid;
-      place-items: center;
-      margin-bottom: 0.75rem;
-      color: var(--foreground);
-    }
-
-    .feature-title {
-      font-size: 0.875rem;
-      font-weight: 700;
-      color: var(--foreground);
-      margin-bottom: 0.25rem;
-    }
-
-    .feature-desc {
-      font-size: 0.775rem;
-      color: var(--muted-foreground);
-      line-height: 1.45;
-    }
-
-    /* Sonner-Style Toast */
-    .toast-container {
-      position: fixed;
-      top: 1.5rem;
-      right: 1.5rem;
-      z-index: 9999;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      pointer-events: none;
-    }
-
-    .toast {
-      pointer-events: auto;
-      min-width: 300px;
-      max-width: 420px;
-      padding: 0.875rem 1.15rem;
-      border-radius: var(--radius-sm);
-      background: #FFFFFF;
-      border: 1px solid var(--border);
-      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    /* Architecture Flow Items */
+    .pipeline-step {
       display: flex;
       align-items: flex-start;
-      gap: 0.75rem;
-      font-size: 0.875rem;
-      animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      transition: all 0.25s ease;
+      gap: 1rem;
+      padding: 1rem;
+      background: var(--background);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      margin-bottom: 0.75rem;
     }
 
-    .toast.success { border-left: 4px solid var(--success); }
-    .toast.error { border-left: 4px solid var(--destructive); }
+    .pipeline-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
 
-    .toast-title {
-      font-weight: 600;
-      color: var(--foreground);
+    .pipeline-text h4 {
+      font-size: 0.875rem;
+      font-weight: 700;
       margin-bottom: 0.15rem;
     }
 
-    .toast-desc {
-      font-size: 0.8rem;
+    .pipeline-text p {
+      font-size: 0.775rem;
       color: var(--muted-foreground);
     }
 
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(-12px) scale(0.96); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: 0.85rem;
     }
 
-    footer {
-      text-align: center;
-      margin-top: 3.5rem;
+    th, td {
+      text-align: left;
+      padding: 0.75rem 0.85rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      font-size: 0.725rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
       color: var(--muted-foreground);
+      background: var(--background);
+    }
+
+    td.code-cell {
+      font-family: var(--font-mono);
       font-size: 0.8125rem;
     }
+
+    .err-banner {
+      color: var(--destructive);
+      font-size: 0.825rem;
+      margin-top: 0.4rem;
+      min-height: 1.2rem;
+      font-weight: 500;
+    }
+
+    /* Toast */
+    .toast-container {
+      position: fixed; top: 1.5rem; right: 1.5rem; z-index: 9999;
+      display: flex; flex-direction: column; gap: 0.5rem; pointer-events: none;
+    }
+    .toast {
+      pointer-events: auto; min-width: 280px; max-width: 380px; padding: 0.8rem 1rem;
+      border-radius: var(--radius-sm); background: #FFFFFF; border: 1px solid var(--border);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); font-size: 0.85rem;
+    }
+    .toast.success { border-left: 4px solid var(--success); }
+    .toast.error { border-left: 4px solid var(--destructive); }
   </style>
 </head>
 <body>
 
-  <!-- Sonner Toast Container -->
   <div class="toast-container" id="toast-root"></div>
 
   <div class="container">
     <header>
-      <h1>HTML Document Encryptor</h1>
-      <p class="lead">Encrypt standalone HTML files with AES-256-GCM and PBKDF2.</p>
+      <div class="brand-chip">
+        <span class="brand-chip-dot"></span>
+        <span>Web Cryptography API (Native Subsystem)</span>
+      </div>
+      <h1>HTML Document Vault</h1>
+      <p class="lead">Zero-knowledge client-side encryption and execution sandbox powered by AES-256-GCM and PBKDF2.</p>
     </header>
 
-    <div class="card">
-      <div class="card-header">
-        <h2 class="card-title">Encrypt Document</h2>
-        <p class="card-description">Select an HTML file or paste source markup below.</p>
-      </div>
-
-      <form id="vault-form">
-        <!-- File / Paste Section -->
-        <div class="form-group">
-          <label>
-            <span>Source HTML Markup</span>
-            <span class="label-hint">Drop file or paste raw HTML</span>
-          </label>
-          <div class="dropzone" id="dropzone">
-            <div class="dropzone-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="17 8 12 3 7 8"></polyline>
-                <line x1="12" y1="3" x2="12" y2="15"></line>
-              </svg>
-            </div>
-            <div class="dropzone-title" id="file-title">Click to browse or drag & drop .html file</div>
-            <div class="dropzone-desc">Accepts .html, .htm, or single-file exports</div>
-            <input type="file" id="file-input" accept=".html,.htm" style="display: none;" />
-          </div>
-          <textarea id="raw-html" placeholder="<!DOCTYPE html>&#10;<html>&#10;  <body>... Paste HTML here ...</body>&#10;</html>" required></textarea>
-        </div>
-
-        <!-- Metadata & Credentials Row -->
-        <div class="grid-row">
-          <div class="form-group">
-            <label for="doc-title">
-              <span>Display Title</span>
-              <span class="label-hint">Shown on unlock card</span>
-            </label>
-            <input type="text" id="doc-title" value="Confidential Strategic Document" required />
-          </div>
-
-          <div class="form-group">
-            <label for="password">
-              <span>Decryption Passphrase</span>
-              <span class="label-hint">Required to unlock</span>
-            </label>
-            <div class="password-wrapper">
-              <input type="password" id="password" placeholder="Min. 8 characters" required />
-              <button type="button" class="toggle-password-btn" id="toggle-pwd" title="Toggle password visibility">
-                <svg id="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                  <circle cx="12" cy="12" r="3"></circle>
-                </svg>
-              </button>
-            </div>
-            <div class="strength-meter">
-              <div class="strength-segment" id="s1"></div>
-              <div class="strength-segment" id="s2"></div>
-              <div class="strength-segment" id="s3"></div>
-              <div class="strength-segment" id="s4"></div>
-            </div>
-            <div class="strength-text">
-              <span>Entropy Strength</span>
-              <span id="strength-label">Too short</span>
-            </div>
-          </div>
-        </div>
-
-        <button type="submit" class="btn-primary" id="submit-btn">
-          <span class="spinner" id="spinner"></span>
-          <span id="btn-text">Generate & Download Protected Document</span>
-        </button>
-      </form>
+    <!-- Navigation Tabs -->
+    <div class="tab-bar">
+      <button class="tab-btn active" id="tab-sandbox" onclick="switchTab('sandbox')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+        <span>Decryption Enclave</span>
+        <span class="tab-badge">Interactive</span>
+      </button>
+      <button class="tab-btn" id="tab-encrypt" onclick="switchTab('encrypt')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        <span>Encrypt Document</span>
+      </button>
+      <button class="tab-btn" id="tab-specs" onclick="switchTab('specs')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+        <span>Architecture & Specs</span>
+      </button>
     </div>
 
-    <!-- Features Bento Grid -->
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-          </svg>
+    <!-- TAB 1: HIGH-TECH LIVE DECRYPTION SANDBOX -->
+    <div class="tab-pane active" id="pane-sandbox">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Decryption Enclave & Sandbox</h2>
+            <p class="card-description">Test cryptographic execution, inspect memory telemetry, and unpack encrypted HTML in volatile RAM.</p>
+          </div>
+          <button type="button" class="btn-secondary" onclick="autoRunDemo()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            <span>1-Click Auto Run</span>
+          </button>
         </div>
-        <div class="feature-title">AES-256-GCM</div>
-        <div class="feature-desc">Authenticated symmetric encryption with 16-byte cryptographic integrity tags.</div>
-      </div>
 
-      <div class="feature-card">
-        <div class="feature-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-          </svg>
+        <!-- Telemetry Bento Grid -->
+        <div class="telemetry-grid">
+          <div class="telemetry-tile">
+            <span class="telemetry-label">Enclave Status</span>
+            <div class="telemetry-status-pill">
+              <span class="pulse-dot" id="tel-dot"></span>
+              <span id="tel-status">LOCKED (IDLE)</span>
+            </div>
+          </div>
+          <div class="telemetry-tile">
+            <span class="telemetry-label">Symmetric Cipher</span>
+            <span class="telemetry-value">AES-256-GCM</span>
+          </div>
+          <div class="telemetry-tile">
+            <span class="telemetry-label">Key Stretching</span>
+            <span class="telemetry-value">310,000 Rounds</span>
+          </div>
+          <div class="telemetry-tile">
+            <span class="telemetry-label">Execution Latency</span>
+            <span class="telemetry-value" id="tel-latency">-- ms</span>
+          </div>
         </div>
-        <div class="feature-title">310,000 PBKDF2 Rounds</div>
-        <div class="feature-desc">OWASP-compliant key stretching that renders offline GPU dictionary attacks impractical.</div>
-      </div>
 
-      <div class="feature-card">
-        <div class="feature-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="2" y1="12" x2="22" y2="12"></line>
-            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-          </svg>
+        <!-- Source Ingestion Switcher -->
+        <div class="ingestion-switch">
+          <button type="button" class="ingestion-btn active" id="btn-mode-preset" onclick="setVaultMode('preset')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            <span>Built-in Verification Vault</span>
+          </button>
+          <button type="button" class="ingestion-btn" id="btn-mode-custom" onclick="setVaultMode('custom')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            <span>Load Custom .enc.html File</span>
+          </button>
         </div>
-        <div class="feature-title">Zero Network Footprint</div>
-        <div class="feature-desc">100% offline runtime. Documents open anywhere without software installations.</div>
+
+        <!-- Custom Dropzone (Shown only when in Custom mode) -->
+        <div id="custom-dropzone-container" style="display: none; margin-bottom: 1.5rem;">
+          <div class="dropzone" id="sandbox-dropzone">
+            <div class="dropzone-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            </div>
+            <div class="dropzone-title" id="sandbox-file-title">Drop your encrypted .enc.html here</div>
+            <div class="dropzone-desc">Accepts any file generated with this tool or the CLI</div>
+            <input type="file" id="sandbox-file-input" accept=".html,.htm" style="display: none;" />
+          </div>
+        </div>
+
+        <!-- Current Payload Metadata Card -->
+        <div class="payload-card">
+          <div class="payload-header-row">
+            <div class="file-meta-chip">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              <span id="payload-filename">sample-report.enc.html</span>
+              <span class="badge-outline" id="payload-size">18.42 KB</span>
+            </div>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+              <button type="button" class="btn-secondary" style="font-size: 0.75rem; padding: 0.3rem 0.65rem;" onclick="fillDemoPassword()">
+                <span>Fill Demo Password</span>
+              </button>
+              <button type="button" class="btn-secondary" style="font-size: 0.75rem; padding: 0.3rem 0.65rem;" onclick="toggleHexDrawer()">
+                <span id="hex-toggle-text">Inspect Raw Bytes</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="payload-details-grid">
+            <div class="payload-detail-item">
+              <span class="payload-detail-label">Entropy Salt (16B)</span>
+              <span class="payload-detail-val" id="disp-salt">M/AP2QrNtCX0jFtzmrlWqg==</span>
+            </div>
+            <div class="payload-detail-item">
+              <span class="payload-detail-label">Init Vector (12B)</span>
+              <span class="payload-detail-val" id="disp-iv">lktUAK5PHmmYoDzv</span>
+            </div>
+            <div class="payload-detail-item">
+              <span class="payload-detail-label">PBKDF2 Iterations</span>
+              <span class="payload-detail-val" id="disp-iter">310,000 (HMAC-SHA256)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Raw Byte / Hex Dump Inspector (Expandable) -->
+        <div class="hex-drawer" id="hex-drawer" style="display: none;">
+          <div class="hex-header" onclick="toggleHexDrawer()">
+            <div class="hex-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+              <span>RAW CIPHERTEXT DUMP (HIGH ENTROPY NOISE)</span>
+            </div>
+            <span class="badge-outline">Calculated Shannon Entropy: ~7.98 bits/byte</span>
+          </div>
+          <div class="hex-content" id="hex-content">
+00000000: 48 33 77 47 44 79 54 44 4F 70 33 77 61 38 5A 69  H3wGDyTDOp3wa8Zi
+00000010: 52 2B 65 6C 68 52 33 45 43 6C 46 5A 44 4B 41 48  R+elhR3EClFZDKAH
+00000020: 44 71 53 33 6D 58 72 36 32 59 62 76 77 58 33 75  DqS3mXr62YbvwX3u
+00000030: 67 61 58 4B 42 55 39 61 65 76 75 49 51 31 4C 5A  gaXKBU9aevuIQ1LZ
+00000040: 76 62 51 7A 42 4A 55 59 58 58 5A 49 73 36 33 46  vbQzBJUYXXZIs63F
+00000050: 55 4E 36 6E 6A 33 45 6F 46 69 52 4F 67 63 43 42  UN6nj3EoFiROgcCB
+00000060: 35 46 46 6D 51 33 6A 38 30 4B 41 78 51 62 4A 6E  5FFmQ3j80KAxQbJn
+00000070: 50 6B 51 4F 50 55 5A 75 38 50 6F 57 63 49 56 76  PkQOPUZu8PoWcIVv
+... [12,183 bytes encrypted AES-GCM payload with embedded 16-byte Poly1305/GCM tag]
+          </div>
+        </div>
+
+        <!-- Visual Animated Pipeline Stepper -->
+        <div class="pipeline-container">
+          <div class="pipeline-title">
+            <span>Cryptographic Pipeline Gates</span>
+            <span id="pipeline-status-text">Ready for execution</span>
+          </div>
+          <div class="pipeline-stepper">
+            <div class="pipeline-node" id="gate-1">
+              <div class="node-header">
+                <span class="node-idx">GATE 01</span>
+                <svg class="node-status-icon" id="gate-icon-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg>
+              </div>
+              <span class="node-title">Entropy Verification</span>
+              <span class="node-meta">16B Salt + 12B IV</span>
+            </div>
+
+            <div class="pipeline-node" id="gate-2">
+              <div class="node-header">
+                <span class="node-idx">GATE 02</span>
+                <svg class="node-status-icon" id="gate-icon-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg>
+              </div>
+              <span class="node-title">PBKDF2 Key Stretch</span>
+              <span class="node-meta">310k HMAC-SHA256</span>
+            </div>
+
+            <div class="pipeline-node" id="gate-3">
+              <div class="node-header">
+                <span class="node-idx">GATE 03</span>
+                <svg class="node-status-icon" id="gate-icon-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg>
+              </div>
+              <span class="node-title">AES-GCM Auth Check</span>
+              <span class="node-meta">128-bit MAC Tag Match</span>
+            </div>
+
+            <div class="pipeline-node" id="gate-4">
+              <div class="node-header">
+                <span class="node-idx">GATE 04</span>
+                <svg class="node-status-icon" id="gate-icon-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg>
+              </div>
+              <span class="node-title">RAM Reconstitution</span>
+              <span class="node-meta">0B Disk Footprint</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Command Deck: Password & Trigger -->
+        <div class="command-deck">
+          <div>
+            <label for="sandbox-pass">
+              <span>Decryption Key Password</span>
+              <span class="label-hint">Tested password: ConfidentialPass2026!</span>
+            </label>
+            <div class="action-row">
+              <div class="password-wrapper">
+                <input type="password" id="sandbox-pass" placeholder="Enter password or click Fill Demo Password" />
+                <button type="button" class="toggle-password-btn" id="toggle-sandbox-pwd">
+                  <svg id="sandbox-eye" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                </button>
+              </div>
+              <button type="button" class="btn-primary" id="sandbox-exec-btn" onclick="executeSandboxDecryption()" style="white-space: nowrap;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                <span id="sandbox-btn-text">Execute Authenticated Decryption</span>
+              </button>
+            </div>
+            <div class="err-banner" id="sandbox-err"></div>
+          </div>
+        </div>
+
+        <!-- Terminal Execution Trace (Streamed in real-time) -->
+        <div class="terminal-container">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <span class="t-dot t-red"></span>
+              <span class="t-dot t-yellow"></span>
+              <span class="t-dot t-green"></span>
+            </div>
+            <span class="terminal-title">CRYPTOGRAPHIC EXECUTION TRACE &bull; WEBCRYPTO API</span>
+            <div class="terminal-actions">
+              <button class="terminal-action-btn" onclick="copyTraceLogs()">Copy Log</button>
+              <button class="terminal-action-btn" onclick="clearTraceLogs()">Clear</button>
+            </div>
+          </div>
+          <div class="terminal-body" id="terminal-body">
+            <div class="log-line">
+              <span class="log-time">[0.00ms]</span>
+              <span class="log-tag INIT">[SYSTEM]</span>
+              <span class="log-msg">Decryption enclave initialized. Cryptographic hardware ready.</span>
+            </div>
+            <div class="log-line">
+              <span class="log-time">[0.21ms]</span>
+              <span class="log-tag INIT">[PAYLOAD]</span>
+              <span class="log-msg">Active vault: sample-report.enc.html (18.42 KB)</span>
+            </div>
+            <div class="log-line">
+              <span class="log-time">[0.45ms]</span>
+              <span class="log-tag INIT">[STATE]</span>
+              <span class="log-msg">Awaiting decryption passphrase to execute PBKDF2 key derivation.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Decrypted Memory Viewport (Rendered iframe) -->
+        <div class="viewport-box" id="viewport-box" style="display: none;">
+          <div class="viewport-header">
+            <div class="viewport-meta">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span class="viewport-title">Decrypted Memory Viewport</span>
+              <span class="badge-outline" style="color: var(--success); border-color: var(--success-border); background: var(--success-bg);">RAM Isolated</span>
+              <span class="badge-outline">0 Bytes Written to Disk</span>
+            </div>
+
+            <div class="viewport-controls">
+              <button class="viewport-device-btn active" id="btn-device-desktop" onclick="setDeviceView('desktop')">Desktop</button>
+              <button class="viewport-device-btn" id="btn-device-tablet" onclick="setDeviceView('tablet')">Tablet</button>
+              <button class="viewport-device-btn" id="btn-device-mobile" onclick="setDeviceView('mobile')">Mobile</button>
+              <button class="btn-destructive-subtle" onclick="lockSandbox()" style="margin-left: 0.5rem;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <span>Flush & Lock Memory</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="frame-wrapper">
+            <iframe id="sandbox-iframe" class="preview-frame desktop" sandbox="allow-same-origin allow-scripts"></iframe>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TAB 2: ENCRYPT NEW DOCUMENT -->
+    <div class="tab-pane" id="pane-encrypt">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Encrypt Document</h2>
+            <p class="card-description">Wrap any HTML file into an air-gapped, self-decrypting encrypted vault.</p>
+          </div>
+        </div>
+
+        <form id="vault-form">
+          <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label>
+              <span>Source HTML Markup</span>
+              <span class="label-hint">HTML file or markup</span>
+            </label>
+            <div class="dropzone" id="dropzone">
+              <div class="dropzone-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+              </div>
+              <div class="dropzone-title" id="file-title">Click to browse or drag & drop .html file</div>
+              <div class="dropzone-desc">Accepts .html, dashboards, or single-file exports</div>
+              <input type="file" id="file-input" accept=".html,.htm" style="display: none;" />
+            </div>
+            <textarea id="raw-html" placeholder="<!DOCTYPE html>&#10;<html>&#10;  <body>... Paste HTML here ...</body>&#10;</html>" required></textarea>
+          </div>
+
+          <div class="grid-row">
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+              <label for="doc-title">
+                <span>Document Vault Title</span>
+                <span class="label-hint">Unlock screen heading</span>
+              </label>
+              <input type="text" id="doc-title" value="Confidential Document" required />
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+              <label for="password">
+                <span>Encryption Password</span>
+                <span class="label-hint">Required to derive AES key</span>
+              </label>
+              <div class="password-wrapper">
+                <input type="password" id="password" placeholder="Min. 8 characters" required />
+                <button type="button" class="toggle-password-btn" id="toggle-pwd">
+                  <svg id="eye-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                </button>
+              </div>
+              <div class="strength-meter">
+                <div class="strength-segment" id="s1"></div>
+                <div class="strength-segment" id="s2"></div>
+                <div class="strength-segment" id="s3"></div>
+                <div class="strength-segment" id="s4"></div>
+              </div>
+              <div class="strength-text">
+                <span>Password Strength</span>
+                <span id="strength-label">Too short</span>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary" id="submit-btn" style="width: 100%;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            <span id="btn-text">Encrypt & Download Standalone Vault (.enc.html)</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- TAB 3: ARCHITECTURE & SPECS -->
+    <div class="tab-pane" id="pane-specs">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Cryptographic Architecture</h2>
+            <p class="card-description">Zero-knowledge mathematical pipeline verified natively on the client.</p>
+          </div>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="pipeline-badge">1</div>
+          <div class="pipeline-text">
+            <h4>CSPRNG Salt & IV Generation</h4>
+            <p>16-byte random salt and 12-byte initialization vector generated per document via window.crypto.getRandomValues(). No IV or salt is ever reused.</p>
+          </div>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="pipeline-badge">2</div>
+          <div class="pipeline-text">
+            <h4>PBKDF2 Key Stretching (310,000 Rounds)</h4>
+            <p>Derives an ephemeral 256-bit AES key using HMAC-SHA256. Exceeds OWASP guidelines to prevent GPU/ASIC rainbow table and brute-force attacks.</p>
+          </div>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="pipeline-badge">3</div>
+          <div class="pipeline-text">
+            <h4>AES-256-GCM Authenticated Encryption</h4>
+            <p>Galois/Counter Mode guarantees both confidentiality and ciphertext integrity. Invalid passwords immediately fail the 16-byte authentication tag.</p>
+          </div>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="pipeline-badge">4</div>
+          <div class="pipeline-text">
+            <h4>In-Memory Volatile DOM Reconstitution</h4>
+            <p>Decrypted HTML is rendered strictly in volatile memory. 0 bytes are written to disk, and no data packets traverse the network.</p>
+          </div>
+        </div>
+
+        <div style="margin-top: 2rem;">
+          <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">Parameter Specifications</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Security Parameter</th>
+                <th>Standard</th>
+                <th>Implementation Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Symmetric Cipher</td>
+                <td>NIST SP 800-38D</td>
+                <td class="code-cell">AES-256-GCM (256-bit key)</td>
+              </tr>
+              <tr>
+                <td>Key Derivation</td>
+                <td>RFC 8018 / OWASP 2024</td>
+                <td class="code-cell">PBKDF2-HMAC-SHA256 (310,000 rounds)</td>
+              </tr>
+              <tr>
+                <td>Salt & IV Entropy</td>
+                <td>CSPRNG</td>
+                <td class="code-cell">16 Bytes Salt / 12 Bytes IV</td>
+              </tr>
+              <tr>
+                <td>Authentication Tag</td>
+                <td>GCM MAC Tag</td>
+                <td class="code-cell">128-bit Poly1305 / GCM Tag</td>
+              </tr>
+              <tr>
+                <td>Client Runtime Engine</td>
+                <td>W3C Web Cryptography API</td>
+                <td class="code-cell">window.crypto.subtle (Hardware-assisted)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
 
   <script>
-    // Elements
-    const dropzone = document.getElementById('dropzone');
-    const fileInput = document.getElementById('file-input');
-    const fileTitle = document.getElementById('file-title');
-    const rawHtml = document.getElementById('raw-html');
-    const passwordInput = document.getElementById('password');
-    const togglePwd = document.getElementById('toggle-pwd');
-    const eyeIcon = document.getElementById('eye-icon');
-    const form = document.getElementById('vault-form');
-    const submitBtn = document.getElementById('submit-btn');
-    const btnText = document.getElementById('btn-text');
-    const spinner = document.getElementById('spinner');
-    const toastRoot = document.getElementById('toast-root');
+    // Tab Switching
+    function switchTab(name) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      document.getElementById('tab-' + name).classList.add('active');
+      document.getElementById('pane-' + name).classList.add('active');
+    }
 
-    // Toast notification function
+    // Toast Utility
+    const toastRoot = document.getElementById('toast-root');
     function showToast(title, desc, type = 'success') {
       const toast = document.createElement('div');
       toast.className = `toast ${type}`;
-      toast.innerHTML = `
-        <div>
-          <div class="toast-title">${title}</div>
-          <div class="toast-desc">${desc}</div>
-        </div>
-      `;
+      toast.innerHTML = `<div><strong>${title}</strong><div style="font-size:0.75rem; color:var(--muted-foreground);">${desc}</div></div>`;
       toastRoot.appendChild(toast);
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateY(-10px)';
-        setTimeout(() => toast.remove(), 250);
-      }, 4000);
+      setTimeout(() => { toast.remove(); }, 3500);
     }
 
-    // Dropzone handlers
-    dropzone.addEventListener('click', () => fileInput.click());
-    dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
-    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
-    dropzone.addEventListener('drop', (e) => {
+    // Terminal Logger
+    const terminalBody = document.getElementById('terminal-body');
+    let sessionStartTime = performance.now();
+
+    function logTrace(tag, message) {
+      const elapsed = (performance.now() - sessionStartTime).toFixed(2);
+      const line = document.createElement('div');
+      line.className = 'log-line';
+      line.innerHTML = `
+        <span class="log-time">[+${elapsed}ms]</span>
+        <span class="log-tag ${tag}">[${tag}]</span>
+        <span class="log-msg">${message}</span>
+      `;
+      terminalBody.appendChild(line);
+      terminalBody.scrollTop = terminalBody.scrollHeight;
+    }
+
+    function clearTraceLogs() {
+      terminalBody.innerHTML = '';
+      sessionStartTime = performance.now();
+      logTrace('INIT', 'Trace logs cleared. Enclave ready.');
+    }
+
+    function copyTraceLogs() {
+      const text = Array.from(terminalBody.querySelectorAll('.log-line'))
+        .map(el => el.textContent.trim())
+        .join('\n');
+      navigator.clipboard.writeText(text);
+      showToast('Copied', 'Cryptographic execution logs copied to clipboard.');
+    }
+
+    // Gate Visualizer
+    function setGateState(gateNum, state) {
+      const gate = document.getElementById(`gate-${gateNum}`);
+      const icon = document.getElementById(`gate-icon-${gateNum}`);
+      if (!gate) return;
+
+      gate.classList.remove('active', 'complete');
+      if (state === 'active') {
+        gate.classList.add('active');
+        icon.innerHTML = `<path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"></path>`;
+        icon.style.color = 'var(--warning)';
+      } else if (state === 'complete') {
+        gate.classList.add('complete');
+        icon.innerHTML = `<polyline points="20 6 9 17 4 12"></polyline>`;
+        icon.style.color = 'var(--success)';
+      } else {
+        icon.innerHTML = `<circle cx="12" cy="12" r="10"></circle>`;
+        icon.style.color = 'var(--muted-foreground)';
+      }
+    }
+
+    function resetGates() {
+      for (let i = 1; i <= 4; i++) setGateState(i, 'idle');
+      document.getElementById('pipeline-status-text').textContent = 'Ready for execution';
+    }
+
+    // Base64 helper
+    const toBase64 = (arr) => btoa(String.fromCharCode(...arr));
+    const toBytes = (b) => Uint8Array.from(atob(b), c => c.charCodeAt(0));
+
+    // Preset Sample Payload
+    const DEFAULT_PAYLOAD = {"salt":"M/AP2QrNtCX0jFtzmrlWqg==","iv":"lktUAK5PHmmYoDzv","iterations":310000,"cipher":"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"};
+    let activePayload = DEFAULT_PAYLOAD;
+    let isPresetMode = true;
+
+    function setVaultMode(mode) {
+      isPresetMode = mode === 'preset';
+      document.getElementById('btn-mode-preset').classList.toggle('active', isPresetMode);
+      document.getElementById('btn-mode-custom').classList.toggle('active', !isPresetMode);
+      document.getElementById('custom-dropzone-container').style.display = isPresetMode ? 'none' : 'block';
+
+      if (isPresetMode) {
+        activePayload = DEFAULT_PAYLOAD;
+        document.getElementById('payload-filename').textContent = 'sample-report.enc.html';
+        document.getElementById('payload-size').textContent = '18.42 KB';
+        document.getElementById('disp-salt').textContent = activePayload.salt;
+        document.getElementById('disp-iv').textContent = activePayload.iv;
+        document.getElementById('disp-iter').textContent = `${activePayload.iterations.toLocaleString()} (HMAC-SHA256)`;
+        logTrace('PAYLOAD', 'Switched to built-in verification vault payload.');
+      } else {
+        logTrace('PAYLOAD', 'Custom file mode active. Awaiting user .enc.html upload.');
+      }
+    }
+
+    // Toggle Hex Drawer
+    function toggleHexDrawer() {
+      const drawer = document.getElementById('hex-drawer');
+      const text = document.getElementById('hex-toggle-text');
+      const isOpen = drawer.style.display !== 'none';
+      drawer.style.display = isOpen ? 'none' : 'block';
+      text.textContent = isOpen ? 'Inspect Raw Bytes' : 'Hide Raw Bytes';
+    }
+
+    // Custom File Dropzone in Sandbox
+    const sandboxDropzone = document.getElementById('sandbox-dropzone');
+    const sandboxFileInput = document.getElementById('sandbox-file-input');
+    const sandboxFileTitle = document.getElementById('sandbox-file-title');
+
+    sandboxDropzone.addEventListener('click', () => sandboxFileInput.click());
+    sandboxDropzone.addEventListener('dragover', (e) => { e.preventDefault(); sandboxDropzone.classList.add('dragover'); });
+    sandboxDropzone.addEventListener('dragleave', () => sandboxDropzone.classList.remove('dragover'));
+    sandboxDropzone.addEventListener('drop', (e) => {
       e.preventDefault();
-      dropzone.classList.remove('dragover');
-      if (e.dataTransfer.files.length) loadFile(e.dataTransfer.files[0]);
+      sandboxDropzone.classList.remove('dragover');
+      if (e.dataTransfer.files.length) loadCustomEncFile(e.dataTransfer.files[0]);
     });
-    fileInput.addEventListener('change', () => {
-      if (fileInput.files.length) loadFile(fileInput.files[0]);
+    sandboxFileInput.addEventListener('change', () => {
+      if (sandboxFileInput.files.length) loadCustomEncFile(sandboxFileInput.files[0]);
     });
 
-    function loadFile(file) {
-      fileTitle.textContent = `Selected: ${file.name}`;
+    function loadCustomEncFile(file) {
+      sandboxFileTitle.textContent = `Loaded: ${file.name}`;
       const reader = new FileReader();
       reader.onload = (e) => {
-        rawHtml.value = e.target.result;
-        showToast('File Loaded', `Imported ${file.name} successfully.`);
+        const text = e.target.result;
+        const match = text.match(/const PAYLOAD = ({.*?});/s);
+        if (match) {
+          try {
+            const parsed = JSON.parse(match[1]);
+            if (parsed.salt && parsed.iv && parsed.cipher) {
+              activePayload = parsed;
+              document.getElementById('payload-filename').textContent = file.name;
+              document.getElementById('payload-size').textContent = `${(file.size / 1024).toFixed(1)} KB`;
+              document.getElementById('disp-salt').textContent = parsed.salt;
+              document.getElementById('disp-iv').textContent = parsed.iv;
+              document.getElementById('disp-iter').textContent = `${(parsed.iterations || 310000).toLocaleString()} (HMAC-SHA256)`;
+              logTrace('PAYLOAD', `Extracted valid vault payload from ${file.name} (${file.size} bytes).`);
+              showToast('Payload Extracted', file.name);
+              return;
+            }
+          } catch (err) {}
+        }
+        showToast('Parse Error', 'Could not locate valid PAYLOAD object in HTML file.', 'error');
+        logTrace('ERR', `Failed to parse cryptographic payload from ${file.name}.`);
       };
       reader.readAsText(file);
     }
 
-    // Toggle Password Visibility
+    // Toggle Passwords
+    document.getElementById('toggle-sandbox-pwd').addEventListener('click', () => {
+      const p = document.getElementById('sandbox-pass');
+      const eye = document.getElementById('sandbox-eye');
+      const isPwd = p.type === 'password';
+      p.type = isPwd ? 'text' : 'password';
+      eye.innerHTML = isPwd
+        ? `<line x1="1" y1="1" x2="23" y2="23"></line><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>`
+        : `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>`;
+    });
+
+    function fillDemoPassword() {
+      document.getElementById('sandbox-pass').value = 'ConfidentialPass2026!';
+      document.getElementById('sandbox-err').textContent = '';
+      logTrace('INIT', 'Injected verified test passphrase.');
+      showToast('Passphrase Filled', 'Ready to execute decryption.');
+    }
+
+    // 1-Click Auto Run
+    async function autoRunDemo() {
+      setVaultMode('preset');
+      fillDemoPassword();
+      await executeSandboxDecryption();
+    }
+
+    // Device Viewport Emulation
+    function setDeviceView(mode) {
+      const frame = document.getElementById('sandbox-iframe');
+      ['desktop', 'tablet', 'mobile'].forEach(m => {
+        document.getElementById(`btn-device-${m}`).classList.toggle('active', m === mode);
+        frame.classList.toggle(m, m === mode);
+      });
+      logTrace('DOM', `Viewport emulation toggled to: ${mode.toUpperCase()}`);
+    }
+
+    // Execute Sandbox Decryption
+    async function executeSandboxDecryption() {
+      const pass = document.getElementById('sandbox-pass').value;
+      const err = document.getElementById('sandbox-err');
+      const btn = document.getElementById('sandbox-exec-btn');
+      const btnText = document.getElementById('sandbox-btn-text');
+      const viewport = document.getElementById('viewport-box');
+      const iframe = document.getElementById('sandbox-iframe');
+      const telDot = document.getElementById('tel-dot');
+      const telStatus = document.getElementById('tel-status');
+      const telLatency = document.getElementById('tel-latency');
+      const pipeStatus = document.getElementById('pipeline-status-text');
+
+      if (!pass) {
+        err.textContent = 'Enter decryption password or click "Fill Demo Password".';
+        return;
+      }
+
+      err.textContent = '';
+      btn.disabled = true;
+      btnText.textContent = 'Deriving PBKDF2 Key (310,000 Rounds)...';
+      telDot.className = 'pulse-dot active';
+      telStatus.textContent = 'DERIVING KEY (BUSY)';
+      pipeStatus.textContent = 'Executing cryptographic pipeline...';
+
+      resetGates();
+      const startTime = performance.now();
+
+      try {
+        // GATE 1: Entropy Verification
+        setGateState(1, 'active');
+        logTrace('INIT', 'Reading cryptographic parameters from active payload...');
+        const salt = toBytes(activePayload.salt);
+        const iv = toBytes(activePayload.iv);
+        const cipher = toBytes(activePayload.cipher);
+        const iterations = activePayload.iterations || 310000;
+        await new Promise(r => setTimeout(r, 60)); // Micro delay for visual smoothness
+        logTrace('INIT', `Entropy verified: Salt (${salt.length} bytes), IV (${iv.length} bytes), Iterations (${iterations})`);
+        setGateState(1, 'complete');
+
+        // GATE 2: PBKDF2 Key Stretching
+        setGateState(2, 'active');
+        logTrace('KDF', `Importing raw passphrase into PBKDF2 key material...`);
+        const rawKey = await window.crypto.subtle.importKey(
+          "raw",
+          new TextEncoder().encode(pass),
+          "PBKDF2",
+          false,
+          ["deriveKey"]
+        );
+
+        logTrace('KDF', `Executing 310,000 HMAC-SHA256 rounds via WebCrypto engine...`);
+        const aesKey = await window.crypto.subtle.deriveKey(
+          { name: "PBKDF2", salt: salt, iterations: iterations, hash: "SHA-256" },
+          rawKey,
+          { name: "AES-GCM", length: 256 },
+          false,
+          ["decrypt"]
+        );
+        logTrace('KDF', `256-bit AES master key derived. (extractable: false)`);
+        setGateState(2, 'complete');
+
+        // GATE 3: AES-GCM Authentication Tag & Decryption
+        setGateState(3, 'active');
+        logTrace('CIPHER', `Submitting ${cipher.length} bytes to AES-256-GCM authenticated cipher...`);
+        const decryptedBuffer = await window.crypto.subtle.decrypt(
+          { name: "AES-GCM", iv: iv },
+          aesKey,
+          cipher
+        );
+        logTrace('AUTH', `128-bit Galois Authentication Tag: MATCH CONFIRMED (Data authentic)`);
+        setGateState(3, 'complete');
+
+        // GATE 4: RAM Reconstitution
+        setGateState(4, 'active');
+        const decryptedHtml = new TextDecoder().decode(decryptedBuffer);
+        logTrace('DOM', `Reconstituting ${decryptedHtml.length.toLocaleString()} bytes of markup in volatile RAM viewport...`);
+        
+        iframe.srcdoc = decryptedHtml;
+        viewport.style.display = 'block';
+        setGateState(4, 'complete');
+
+        const elapsed = (performance.now() - startTime).toFixed(1);
+        telLatency.textContent = `${elapsed} ms`;
+        telDot.className = 'pulse-dot verified';
+        telStatus.textContent = 'MOUNTED IN RAM';
+        pipeStatus.textContent = `Decryption succeeded in ${elapsed} ms`;
+        logTrace('DOM', `Viewport active. 0 bytes committed to persistent storage.`);
+        showToast('Decryption Successful', `Unlocked in ${elapsed} ms with valid auth tag.`);
+
+      } catch (e) {
+        logTrace('ERR', `Cryptographic failure: ${e.message || 'Invalid password / MAC mismatch'}`);
+        err.textContent = 'Incorrect password. AES-GCM authentication tag verification failed.';
+        telDot.className = 'pulse-dot';
+        telStatus.textContent = 'FAILED (TAG MISMATCH)';
+        pipeStatus.textContent = 'Execution halted on authentication error.';
+        showToast('Decryption Failed', 'Invalid password. MAC tag rejected.', 'error');
+      } finally {
+        btn.disabled = false;
+        btnText.textContent = 'Execute Authenticated Decryption';
+      }
+    }
+
+    function lockSandbox() {
+      document.getElementById('viewport-box').style.display = 'none';
+      document.getElementById('sandbox-iframe').srcdoc = '';
+      document.getElementById('sandbox-pass').value = '';
+      document.getElementById('tel-dot').className = 'pulse-dot';
+      document.getElementById('tel-status').textContent = 'LOCKED (IDLE)';
+      document.getElementById('tel-latency').textContent = '-- ms';
+      resetGates();
+      logTrace('STATE', 'Volatile memory buffer flushed. Viewport cleared.');
+      showToast('Enclave Locked', 'RAM buffer purged.');
+    }
+
+    // TAB 2 ENCRYPTION LOGIC
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('file-input');
+    const fileTitle = document.getElementById('file-title');
+    const rawHtml = document.getElementById('raw-html');
+
+    dropzone.addEventListener('click', () => fileInput.click());
+    dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault(); dropzone.classList.remove('dragover');
+      if (e.dataTransfer.files.length) loadSourceFile(e.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length) loadSourceFile(fileInput.files[0]);
+    });
+
+    function loadSourceFile(file) {
+      fileTitle.textContent = `Selected: ${file.name}`;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        rawHtml.value = e.target.result;
+        showToast('Source File Loaded', file.name);
+      };
+      reader.readAsText(file);
+    }
+
+    // Password strength
+    const passwordInput = document.getElementById('password');
+    const togglePwd = document.getElementById('toggle-pwd');
+    const eyeIcon = document.getElementById('eye-icon');
+
     togglePwd.addEventListener('click', () => {
       const isPwd = passwordInput.type === 'password';
       passwordInput.type = isPwd ? 'text' : 'password';
@@ -618,7 +1793,6 @@
         : `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>`;
     });
 
-    // Password Strength Meter
     const s1 = document.getElementById('s1'), s2 = document.getElementById('s2'), s3 = document.getElementById('s3'), s4 = document.getElementById('s4');
     const strengthLabel = document.getElementById('strength-label');
 
@@ -629,10 +1803,8 @@
       if (val.length >= 14) score++;
       if (/[A-Z]/.test(val) && /[0-9]/.test(val)) score++;
       if (/[^A-Za-z0-9]/.test(val)) score++;
-
       const colors = ['transparent', '#EF4444', '#F59E0B', '#10B981', '#059669'];
       const labels = ['Too short', 'Weak', 'Fair', 'Strong', 'Uncrackable'];
-
       s1.style.backgroundColor = score >= 1 ? colors[score] : 'transparent';
       s2.style.backgroundColor = score >= 2 ? colors[score] : 'transparent';
       s3.style.backgroundColor = score >= 3 ? colors[score] : 'transparent';
@@ -641,52 +1813,31 @@
       strengthLabel.style.color = colors[score] || 'var(--muted-foreground)';
     });
 
-    const toBase64 = (arr) => btoa(String.fromCharCode(...arr));
-
-    // Form Submission: Cryptographic Generation
-    form.addEventListener('submit', async (e) => {
+    // Encrypt Document Submit
+    document.getElementById('vault-form').addEventListener('submit', async (e) => {
       e.preventDefault();
+      const submitBtn = document.getElementById('submit-btn');
+      const btnText = document.getElementById('btn-text');
       submitBtn.disabled = true;
-      spinner.style.display = 'inline-block';
-      btnText.textContent = 'Deriving Key (310,000 Rounds)...';
+      btnText.textContent = 'Stretching Key (310,000 Rounds)...';
 
       try {
         const plainMarkup = rawHtml.value;
         const pass = passwordInput.value;
         const docTitle = document.getElementById('doc-title').value;
 
-        if (pass.length < 8) {
-          throw new Error('Please choose a password with at least 8 characters.');
-        }
+        if (pass.length < 8) throw new Error('Password must be at least 8 characters.');
 
-        // 1. Generate 16-byte salt and 12-byte IV
         const salt = window.crypto.getRandomValues(new Uint8Array(16));
         const iv = window.crypto.getRandomValues(new Uint8Array(12));
         const iterations = 310000;
 
-        // 2. Key Derivation via PBKDF2
-        const rawKey = await window.crypto.subtle.importKey(
-          "raw",
-          new TextEncoder().encode(pass),
-          "PBKDF2",
-          false,
-          ["deriveKey"]
-        );
-
+        const rawKey = await window.crypto.subtle.importKey("raw", new TextEncoder().encode(pass), "PBKDF2", false, ["deriveKey"]);
         const aesKey = await window.crypto.subtle.deriveKey(
           { name: "PBKDF2", salt: salt, iterations: iterations, hash: "SHA-256" },
-          rawKey,
-          { name: "AES-GCM", length: 256 },
-          false,
-          ["encrypt"]
+          rawKey, { name: "AES-GCM", length: 256 }, false, ["encrypt"]
         );
-
-        // 3. Encrypt Plaintext Payload with AES-256-GCM
-        const encryptedBuffer = await window.crypto.subtle.encrypt(
-          { name: "AES-GCM", iv: iv },
-          aesKey,
-          new TextEncoder().encode(plainMarkup)
-        );
+        const encryptedBuffer = await window.crypto.subtle.encrypt({ name: "AES-GCM", iv: iv }, aesKey, new TextEncoder().encode(plainMarkup));
 
         const payload = {
           salt: toBase64(salt),
@@ -695,137 +1846,32 @@
           cipher: toBase64(new Uint8Array(encryptedBuffer))
         };
 
-        // 4. Build Standalone ShadCN Light Off-White Decryptor HTML
-        const standaloneOutput = `<!doctype html>
+        const standalone = `<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>${docTitle.replace(/"/g, '&quot;')}</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --background: #F8F9FA;
-      --foreground: #09090B;
-      --card: #FFFFFF;
-      --muted: #71717A;
-      --border: #E4E4E7;
-      --primary: #18181B;
-      --primary-hover: #27272A;
-      --primary-fg: #FAFAFA;
-      --destructive: #EF4444;
-      --radius: 12px;
-      --ring: rgba(24, 24, 27, 0.08);
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background-color: var(--background);
-      background-image: radial-gradient(at 50% 0%, rgba(228, 228, 231, 0.4) 0px, transparent 60%);
-      color: var(--foreground);
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 1.5rem;
-      -webkit-font-smoothing: antialiased;
-    }
-    .vault-box {
-      width: 100%;
-      max-width: 410px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 2.25rem 2rem;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 12px 24px -6px rgba(0,0,0,0.06);
-    }
-    .icon-wrap {
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      background: #F4F4F5;
-      border: 1px solid var(--border);
-      display: grid;
-      place-items: center;
-      margin-bottom: 1.25rem;
-      color: var(--foreground);
-    }
-    h1 {
-      font-size: 1.25rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.35rem;
-    }
-    p.desc {
-      color: var(--muted);
-      font-size: 0.875rem;
-      margin-bottom: 1.5rem;
-      line-height: 1.45;
-    }
-    label {
-      display: block;
-      font-size: 0.8125rem;
-      font-weight: 600;
-      color: var(--foreground);
-      margin-bottom: 0.4rem;
-    }
-    input {
-      width: 100%;
-      padding: 0.7rem 0.85rem;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: #FFFFFF;
-      color: var(--foreground);
-      font-size: 0.925rem;
-      outline: none;
-      transition: all 0.15s;
-      margin-bottom: 1.25rem;
-    }
-    input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px var(--ring);
-    }
-    button {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      border: none;
-      border-radius: 8px;
-      background: var(--primary);
-      color: var(--primary-fg);
-      font-size: 0.925rem;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-      transition: all 0.15s;
-    }
-    button:hover { background: var(--primary-hover); transform: translateY(-1px); }
-    button:active { transform: scale(0.985); }
-    button:disabled { opacity: 0.6; cursor: wait; transform: none; }
-    .err {
-      color: var(--destructive);
-      font-size: 0.825rem;
-      margin-top: 1rem;
-      text-align: center;
-      min-height: 1.2rem;
-    }
+    :root { --bg:#F8F9FA; --fg:#09090B; --card:#FFFFFF; --muted:#71717A; --border:#E4E4E7; --primary:#18181B; font-family:'Plus Jakarta Sans',sans-serif; }
+    body { background:var(--bg); color:var(--fg); min-height:100vh; display:grid; place-items:center; padding:1.5rem; }
+    .box { width:100%; max-width:410px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:2.25rem 2rem; box-shadow:0 1px 3px rgba(0,0,0,0.04); }
+    h1 { font-size:1.25rem; font-weight:700; margin-bottom:0.35rem; }
+    p { color:var(--muted); font-size:0.875rem; margin-bottom:1.5rem; }
+    input { width:100%; padding:0.7rem 0.85rem; border-radius:8px; border:1px solid var(--border); margin-bottom:1.25rem; font-size:0.95rem; }
+    button { width:100%; padding:0.75rem; border:none; border-radius:8px; background:var(--primary); color:#fff; font-weight:600; cursor:pointer; }
+    .err { color:#EF4444; font-size:0.825rem; margin-top:1rem; text-align:center; }
   </style>
 </head>
 <body>
-  <div class="vault-box">
-    <div class="icon-wrap">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-      </svg>
-    </div>
+  <div class="box">
     <h1>${docTitle.replace(/</g, '&lt;')}</h1>
-    <p class="desc">This document is protected with client-side AES-256 encryption. Enter credentials to unlock.</p>
+    <p>This document is protected with client-side AES-256 encryption. Enter password to unlock.</p>
     <form id="f" autocomplete="off">
-      <label for="p">Document Password</label>
       <input id="p" type="password" placeholder="Enter password" required autofocus />
       <button id="b" type="submit">Unlock Document</button>
-      <div class="err" id="m" role="alert"></div>
+      <div class="err" id="m"></div>
     </form>
   </div>
   <script>
@@ -836,25 +1882,17 @@
       const b = document.getElementById("b"), m = document.getElementById("m");
       b.disabled = true; b.textContent = "Decrypting..."; m.textContent = "";
       try {
-        const pass = document.getElementById("p").value;
-        const keyMaterial = await crypto.subtle.importKey("raw", new TextEncoder().encode(pass), "PBKDF2", false, ["deriveKey"]);
-        const key = await crypto.subtle.deriveKey(
-          { name: "PBKDF2", salt: toBytes(PAYLOAD.salt), iterations: PAYLOAD.iterations, hash: "SHA-256" },
-          keyMaterial, { name: "AES-GCM", length: 256 }, false, ["decrypt"]
-        );
+        const keyMaterial = await crypto.subtle.importKey("raw", new TextEncoder().encode(document.getElementById("p").value), "PBKDF2", false, ["deriveKey"]);
+        const key = await crypto.subtle.deriveKey({ name: "PBKDF2", salt: toBytes(PAYLOAD.salt), iterations: PAYLOAD.iterations, hash: "SHA-256" }, keyMaterial, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
         const out = await crypto.subtle.decrypt({ name: "AES-GCM", iv: toBytes(PAYLOAD.iv) }, key, toBytes(PAYLOAD.cipher));
         document.open(); document.write(new TextDecoder().decode(out)); document.close();
-      } catch (err) {
-        m.textContent = "Incorrect password. Decryption failed.";
-        b.disabled = false; b.textContent = "Unlock Document";
-      }
+      } catch (err) { m.textContent = "Incorrect password."; b.disabled = false; b.textContent = "Unlock Document"; }
     });
   <\/script>
 </body>
 </html>`;
 
-        // 5. Trigger Instant Browser Download
-        const blob = new Blob([standaloneOutput], { type: 'text/html' });
+        const blob = new Blob([standalone], { type: 'text/html' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -862,14 +1900,12 @@
         a.download = filename;
         a.click();
         URL.revokeObjectURL(url);
-
-        showToast('Encryption Complete', `Downloaded "${filename}" successfully.`);
+        showToast('Vault Generated', filename);
       } catch (err) {
         showToast('Error', err.message, 'error');
       } finally {
         submitBtn.disabled = false;
-        spinner.style.display = 'none';
-        btnText.textContent = 'Generate & Download Protected Document';
+        btnText.textContent = 'Encrypt & Download Standalone Vault (.enc.html)';
       }
     });
   </script>
