@@ -449,13 +449,13 @@
       word-break: break-all;
     }
 
-    /* SECTION: UNIFIED PASSWORD & ACTION ROW (Top UX Hierarchy) */
+    /* SECTION: UNIFIED CONTROL BAR */
     .action-panel {
       background: #FFFFFF;
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       padding: 1.5rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1.75rem;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
     }
 
@@ -607,9 +607,9 @@
       gap: 0.4rem;
     }
 
-    /* SECTION: CONNECTED PIPELINE STEPPER (Smooth 01 -> 02 -> 03 -> 04 Flow) */
+    /* SECTION: CONNECTED PIPELINE STEPPER */
     .stepper-section {
-      margin-bottom: 2rem;
+      margin-bottom: 1.75rem;
     }
 
     .stepper-header {
@@ -646,7 +646,6 @@
       font-weight: 700;
     }
 
-    /* Connected Pipeline Stepper Layout with Progress Connectors */
     .stepper-track {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -809,7 +808,7 @@
       font-family: var(--font-mono);
       font-size: 0.775rem;
       color: #E4E4E7;
-      max-height: 200px;
+      max-height: 180px;
       overflow-y: auto;
       line-height: 1.65;
     }
@@ -828,57 +827,102 @@
     .t-tag.SUCCESS { color: #34D399; }
     .t-tag.ERR { color: #F87171; }
 
-    /* Decrypted Document Viewport */
-    .viewport-box {
-      display: none;
-      border: 1px solid var(--accent-green-border);
+    /* ======================================================== */
+    /* SIMULATED ISOLATED BROWSER WINDOW (The Embedded Sandbox) */
+    /* ======================================================== */
+    .sandbox-browser-window {
+      border: 1px solid var(--border);
       border-radius: var(--radius-xl);
       background: #FFFFFF;
       overflow: hidden;
-      margin-top: 2rem;
-      box-shadow: 0 6px 30px -4px rgba(16, 185, 129, 0.14);
-      animation: viewportSlide 0.4s var(--spring);
-    }
-
-    @keyframes viewportSlide {
-      from { opacity: 0; transform: translateY(24px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .viewport-header {
+      margin-top: 1rem;
+      box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.12);
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+    }
+
+    /* Browser Chrome Toolbar */
+    .browser-toolbar {
+      background: #F4F4F6;
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1.15rem;
+      display: flex;
       align-items: center;
-      background: #F8FDF9;
-      border-bottom: 1px solid var(--accent-green-border);
-      padding: 0.95rem 1.35rem;
+      gap: 1rem;
       flex-wrap: wrap;
-      gap: 0.75rem;
     }
 
-    .viewport-status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.875rem;
-      font-weight: 700;
-      color: var(--accent-green-text);
-    }
-
-    .viewport-buttons {
+    .browser-controls {
       display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .btn-vaction {
-      display: inline-flex;
       align-items: center;
       gap: 0.4rem;
+    }
+
+    .bdot { width: 11px; height: 11px; border-radius: 50%; }
+    .bdot.close { background: #FF5F56; }
+    .bdot.min { background: #FFBD2E; }
+    .bdot.max { background: #27C93F; }
+
+    .browser-nav-arrows {
+      display: flex;
+      gap: 0.35rem;
+      color: var(--fg-muted);
+      margin-left: 0.4rem;
+    }
+
+    .browser-url-bar {
+      flex: 1;
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      padding: 0.4rem 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.775rem;
+      color: var(--fg);
+      min-width: 240px;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02);
+    }
+
+    .url-lock-icon {
+      color: var(--accent-green);
+      flex-shrink: 0;
+    }
+
+    .url-text {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .url-badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      background: var(--accent-green-bg);
+      color: var(--accent-green-text);
+      border: 1px solid var(--accent-green-border);
+      padding: 0.1rem 0.45rem;
+      border-radius: 9999px;
+      white-space: nowrap;
+    }
+
+    .browser-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .browser-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
       font-family: var(--font-sans);
-      font-size: 0.8rem;
+      font-size: 0.775rem;
       font-weight: 600;
-      padding: 0.45rem 0.85rem;
+      padding: 0.4rem 0.75rem;
       border-radius: var(--radius-sm);
       border: 1px solid var(--border);
       background: #FFFFFF;
@@ -887,33 +931,304 @@
       transition: all 0.15s ease;
     }
 
-    .btn-vaction:hover {
+    .browser-action-btn:hover {
       background: #F4F4F5;
       border-color: #D4D4D8;
     }
 
-    .btn-vaction.danger:hover {
+    .browser-action-btn.danger:hover {
       background: #FEF2F2;
       border-color: #FECACA;
       color: var(--accent-red);
     }
 
-    .iframe-container {
-      background: #F4F4F6;
-      padding: 1.25rem;
+    /* Sandbox Viewport Area */
+    .sandbox-viewport {
+      min-height: 580px;
+      position: relative;
+      background: #F8F9FA;
       display: flex;
+      flex-direction: column;
+    }
+
+    /* STATE A: THE AUTHENTIC IN-SANDBOX LOCK SCREEN */
+    .sandbox-lock-screen {
+      flex: 1;
+      display: flex;
+      align-items: center;
       justify-content: center;
+      padding: 3.5rem 1.5rem;
+      background: radial-gradient(at 50% 0%, rgba(228, 228, 231, 0.45) 0px, transparent 70%);
+    }
+
+    .sandbox-lock-card {
+      width: 100%;
+      max-width: 550px;
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 2.25rem;
+      box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.08);
+      text-align: left;
+      animation: tabFadeIn 0.3s var(--spring);
+    }
+
+    .sandbox-lock-card-header {
+      display: flex;
       align-items: flex-start;
-      min-height: 520px;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid #F4F4F6;
+      padding-bottom: 1.1rem;
+    }
+
+    .lock-shield-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: #F4F4F6;
+      border: 1px solid var(--border);
+      display: grid;
+      place-items: center;
+      color: var(--fg);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+      flex-shrink: 0;
+    }
+
+    .sandbox-lock-card h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--fg);
+      margin-bottom: 0.2rem;
+    }
+
+    .sandbox-lock-card p.lock-explainer {
+      font-size: 0.8rem;
+      color: var(--fg-muted);
+      line-height: 1.4;
+    }
+
+    .sandbox-secure-badge {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.2rem 0.55rem;
+      border-radius: 9999px;
+      background: #F4F4F6;
+      color: #52525B;
+      border: 1px solid var(--border);
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .crypto-guarantee-box {
+      background: #FAFAFC;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.9rem 1rem;
+      margin-bottom: 1.35rem;
+    }
+
+    .crypto-guarantee-box-title {
+      font-size: 0.775rem;
+      font-weight: 700;
+      color: #18181B;
+      margin-bottom: 0.45rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .crypto-guarantee-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .crypto-guarantee-list li {
+      font-size: 0.76rem;
+      color: #52525B;
+      line-height: 1.45;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.45rem;
+    }
+
+    .crypto-guarantee-list li strong {
+      color: #18181B;
+    }
+
+    .in-sandbox-input-wrap {
+      position: relative;
+      margin-bottom: 0.65rem;
+    }
+
+    .in-sandbox-input {
+      width: 100%;
+      height: 46px;
+      padding: 0 2.5rem 0 0.85rem;
+      font-family: var(--font-mono);
+      font-size: 0.925rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      outline: none;
+      background: #FFFFFF;
+      transition: all 0.15s ease;
+    }
+
+    .in-sandbox-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(24, 24, 27, 0.08);
+    }
+
+    .in-sandbox-eye {
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: var(--fg-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+    }
+    .in-sandbox-eye:hover { color: var(--fg); }
+
+    .sandbox-pass-helpers {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.15rem;
+      font-size: 0.75rem;
+    }
+
+    .btn-demo-pill {
+      background: #F4F4F6;
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      padding: 0.25rem 0.65rem;
+      font-size: 0.725rem;
+      font-weight: 600;
+      color: #52525B;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.12s ease;
+    }
+    .btn-demo-pill:hover {
+      background: #E4E4E7;
+      color: #18181B;
+    }
+
+    .sandbox-kbd-hint {
+      color: var(--fg-subtle);
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+    }
+
+    .btn-sandbox-unlock {
+      width: 100%;
+      height: 46px;
+      background: var(--primary);
+      color: #FFFFFF;
+      border: none;
+      border-radius: var(--radius-md);
+      font-family: var(--font-sans);
+      font-size: 0.925rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.15s var(--spring);
+    }
+
+    .btn-sandbox-unlock:hover { background: var(--primary-hover); }
+    .btn-sandbox-unlock:active { transform: scale(0.98); }
+    .btn-sandbox-unlock:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .sandbox-error-alert {
+      display: none;
+      margin-top: 0.85rem;
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      border-radius: var(--radius-sm);
+      padding: 0.65rem 0.85rem;
+      color: #991B1B;
+      font-size: 0.775rem;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .sandbox-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      margin-top: 1.25rem;
+      padding-top: 1rem;
+      border-top: 1px solid #F4F4F6;
+      font-size: 0.725rem;
+      color: var(--fg-muted);
+    }
+
+    .sandbox-card-footer span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    /* STATE B: THE DECRYPTED IFRAME */
+    .sandbox-frame-wrap {
+      display: none;
+      width: 100%;
+      animation: tabFadeIn 0.35s var(--spring);
+    }
+
+    .sandbox-frame-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.65rem 1.15rem;
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.775rem;
+    }
+
+    .frame-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-weight: 600;
+      color: var(--accent-green-text);
+      background: var(--accent-green-bg);
+      border: 1px solid var(--accent-green-border);
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+    }
+
+    .frame-actions-row {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
     }
 
     .sandboxed-frame {
       width: 100%;
       height: 720px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
+      border: none;
       background: #FFFFFF;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      display: block;
     }
 
     /* Custom Dropzone (Custom File mode) */
@@ -1074,7 +1389,7 @@
         <div class="vault-box-header">
           <div class="vault-box-title">
             <h2>Decryption Enclave & Sandbox</h2>
-            <p>Test cryptographic execution, inspect memory telemetry, and unpack encrypted HTML in volatile RAM.</p>
+            <p>Inspect client-side encrypted capsules, simulate isolated browser decryption, and unpack in volatile RAM.</p>
           </div>
         </div>
 
@@ -1084,7 +1399,7 @@
             <span class="tel-label">Enclave Status</span>
             <div class="tel-val" id="tel-status-val">
               <span class="status-dot active" id="tel-status-dot"></span>
-              <span id="tel-status-text">READY</span>
+              <span id="tel-status-text">LOCKED</span>
             </div>
           </div>
           <div class="tel-card">
@@ -1164,7 +1479,7 @@
           </div>
         </div>
 
-        <!-- SECTION: UNIFIED PASSPHRASE INPUT & ACTION BUTTONS -->
+        <!-- SECTION: UNIFIED PASSPHRASE CONTROLLER -->
         <div class="action-panel">
           <div class="action-panel-top">
             <span class="action-panel-title">Decryption Passphrase</span>
@@ -1176,7 +1491,7 @@
 
           <div class="action-input-row">
             <div class="input-wrap">
-              <input type="password" id="pass-field" class="input-password" value="ConfidentialPass2026!" placeholder="Enter vault password...">
+              <input type="password" id="pass-field" class="input-password" value="" placeholder="Enter vault password (or click Use Demo Key)..." oninput="syncPassInputs(this.value)" onkeydown="if(event.key==='Enter') executeDecryption()">
               <button class="eye-toggle-btn" onclick="togglePassView()" title="Toggle visibility">
                 <svg id="pass-eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
               </button>
@@ -1197,7 +1512,7 @@
           </div>
         </div>
 
-        <!-- SECTION: CONNECTED PIPELINE STEPPER (Smooth 01 -> 02 -> 03 -> 04 Flow) -->
+        <!-- SECTION: CONNECTED PIPELINE STEPPER -->
         <div class="stepper-section">
           <div class="stepper-header">
             <span class="stepper-title">Cryptographic Pipeline Gates</span>
@@ -1259,35 +1574,162 @@
           </div>
           <div class="terminal-screen" id="terminal-screen">
             <div class="tline"><span class="t-time">[+0.00ms]</span> <span class="t-tag INIT">[INIT]</span> <span>Enclave online. Native WebCrypto subsystem initialized.</span></div>
-            <div class="tline"><span class="t-time">[+0.15ms]</span> <span class="t-tag INIT">[INIT]</span> <span>Target vault: sample-report.enc.html (18,421 bytes). Ready for key injection.</span></div>
+            <div class="tline"><span class="t-time">[+0.15ms]</span> <span class="t-tag INIT">[INIT]</span> <span>Target vault: sample-report.enc.html (18,421 bytes). Isolated browser sandbox ready.</span></div>
           </div>
         </div>
 
-        <!-- Decrypted Report Viewport (Clean, Full Responsive Width) -->
-        <div id="decrypted-viewport" class="viewport-box">
-          <div class="viewport-header">
-            <div class="viewport-status-badge">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              <span id="viewport-heading">✓ Cryptographic Verification Report Decrypted</span>
+        <!-- ======================================================== -->
+        <!-- SIMULATED ISOLATED BROWSER WINDOW (The Embedded Sandbox) -->
+        <!-- ======================================================== -->
+        <div class="sandbox-browser-window">
+          
+          <!-- Browser Chrome Toolbar -->
+          <div class="browser-toolbar">
+            <div class="browser-controls">
+              <span class="bdot close" onclick="relockVault()" title="Close document / Lock RAM"></span>
+              <span class="bdot min" title="Minimize"></span>
+              <span class="bdot max" onclick="openFullscreenReport()" title="Maximize / Pop out"></span>
             </div>
-            <div class="viewport-buttons">
-              <button class="btn-vaction" onclick="downloadDecryptedHtml()">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                Export HTML
+            <div class="browser-nav-arrows">
+              <span class="browser-nav-icon" title="Back"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></span>
+              <span class="browser-nav-icon" title="Forward"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></span>
+              <span class="browser-nav-icon" onclick="relockVault()" title="Reload / Re-lock Sandbox"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg></span>
+            </div>
+            <div class="browser-url-bar">
+              <svg class="url-lock-icon" id="browser-url-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              <span class="url-text" id="browser-url-text">vault://sample-report.enc.html</span>
+              <span class="url-badge" id="browser-url-badge">AES-256-GCM Locked</span>
+            </div>
+            <div class="browser-actions">
+              <button class="browser-action-btn" onclick="openFullscreenReport()" title="Open in real browser tab">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                Pop Out
               </button>
-              <button class="btn-vaction" onclick="openFullscreenReport()">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                Full Screen
+              <button class="browser-action-btn" onclick="downloadDecryptedHtml()" id="btn-browser-export" style="display:none;" title="Save decrypted HTML">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Export
               </button>
-              <button class="btn-vaction danger" onclick="relockVault()">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                Lock & Wipe RAM
+              <button class="browser-action-btn danger" onclick="relockVault()" id="btn-browser-lock" style="display:none;" title="Lock and purge RAM">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                Lock
               </button>
             </div>
           </div>
-          <div class="iframe-container">
-            <iframe id="report-frame" class="sandboxed-frame" sandbox="allow-scripts allow-same-origin"></iframe>
+
+          <!-- Sandbox Viewport Area -->
+          <div class="sandbox-viewport" id="sandbox-viewport">
+            
+            <!-- STATE A: AUTHENTIC IN-SANDBOX LOCK SCREEN -->
+            <div class="sandbox-lock-screen" id="sandbox-lock-screen">
+              <div class="sandbox-lock-card">
+                
+                <div class="sandbox-lock-card-header">
+                  <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <div class="lock-shield-badge">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    </div>
+                    <div>
+                      <h3 id="sandbox-card-title">Protected Document Vault</h3>
+                      <p class="lock-explainer">Zero-Knowledge Offline Cryptographic Enclave</p>
+                    </div>
+                  </div>
+                  <span class="sandbox-secure-badge">
+                    <span style="width:6px; height:6px; border-radius:50%; background:#10B981;"></span>
+                    Zero-Knowledge
+                  </span>
+                </div>
+
+                <!-- Cryptographic Hardness Explanation (User Request) -->
+                <div class="crypto-guarantee-box">
+                  <div class="crypto-guarantee-box-title">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--accent-green);"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <span>Cryptographic Security Guarantee</span>
+                  </div>
+                  <ul class="crypto-guarantee-list">
+                    <li>
+                      <span style="color:var(--accent-green); font-weight:700;">•</span>
+                      <span><strong>AES-256-GCM Cipher:</strong> Symmetric 256-bit Galois/Counter Mode encryption guarantees both confidential secrecy and authentic document integrity.</span>
+                    </li>
+                    <li>
+                      <span style="color:var(--accent-green); font-weight:700;">•</span>
+                      <span><strong>310,000 PBKDF2 Iterations:</strong> Key derivation purposefully demands high compute cycles, rendering brute-force or dictionary cracking computationally infeasible.</span>
+                    </li>
+                    <li>
+                      <span style="color:var(--accent-green); font-weight:700;">•</span>
+                      <span><strong>No Server Backdoor:</strong> Without this exact passphrase, the 128-bit MAC tag check fails instantly. No plain text touches disk or leaves local RAM.</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <!-- In-Sandbox Password Entry Form -->
+                <div style="margin-bottom: 0.35rem;">
+                  <label style="display:block; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--fg);" for="sandbox-pass-input">
+                    Vault Decryption Passphrase
+                  </label>
+                  <div class="in-sandbox-input-wrap">
+                    <input type="password" id="sandbox-pass-input" class="in-sandbox-input" value="" placeholder="Type passphrase (or use Demo Key below)..." oninput="syncPassInputs(this.value)" onkeydown="if(event.key==='Enter') executeDecryption()">
+                    <button type="button" class="in-sandbox-eye" onclick="togglePassView()" title="Toggle visibility">
+                      <svg id="sandbox-eye-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="sandbox-pass-helpers">
+                  <button type="button" class="btn-demo-pill" onclick="fillTestPassword()">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="4"></circle><path d="M12 12l8 8m-4-2l2 2m-2-4l2 2"></path></svg>
+                    <span>Try Demo Key: ConfidentialPass2026!</span>
+                  </button>
+                  <span class="sandbox-kbd-hint">Press ↵ Enter to unlock</span>
+                </div>
+
+                <button class="btn-sandbox-unlock" id="btn-sandbox-unlock" onclick="executeDecryption()">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>
+                  <span id="btn-sandbox-unlock-text">Decrypt Document in Volatile RAM</span>
+                </button>
+
+                <!-- In-Sandbox Error Alert Banner -->
+                <div id="sandbox-error-banner" class="sandbox-error-alert">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                  <span id="sandbox-error-text">Decryption failed: Incorrect passphrase. AES-GCM MAC tag mismatch.</span>
+                </div>
+
+                <!-- Footer Security Assurances -->
+                <div class="sandbox-card-footer">
+                  <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> 0B Disk Footprint</span>
+                  <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Volatile RAM Only</span>
+                  <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> 100% Offline Client-Side</span>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- STATE B: THE DECRYPTED DOCUMENT IFRAME -->
+            <div class="sandbox-frame-wrap" id="sandbox-frame-wrap">
+              <div class="sandbox-frame-topbar">
+                <div class="frame-status-pill">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span id="frame-status-text">Cryptographic Verification Report • Unlocked in RAM</span>
+                </div>
+                <div class="frame-actions-row">
+                  <button class="browser-action-btn" onclick="openFullscreenReport()">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                    Fullscreen Window
+                  </button>
+                  <button class="browser-action-btn" onclick="downloadDecryptedHtml()">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    Download HTML
+                  </button>
+                  <button class="browser-action-btn danger" onclick="relockVault()">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    Lock & Wipe RAM
+                  </button>
+                </div>
+              </div>
+              <iframe id="report-frame" class="sandboxed-frame" sandbox="allow-scripts allow-same-origin"></iframe>
+            </div>
+
           </div>
+
         </div>
 
       </div>
@@ -1397,6 +1839,12 @@
     // Small async sleep helper for visual smoothness in UI pipeline
     const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
+    // Two-way synchronization between top passphrase field and in-sandbox password input
+    function syncPassInputs(val) {
+      document.getElementById('pass-field').value = val;
+      document.getElementById('sandbox-pass-input').value = val;
+    }
+
     // Toast Functionality
     function fireToast(title, subtitle, type = 'success') {
       const tray = document.getElementById('toast-tray');
@@ -1464,6 +1912,8 @@
         document.getElementById('disp-iv').textContent = activePayload.iv;
         document.getElementById('disp-iter-badge').textContent = activePayload.iterations.toLocaleString() + ' Rounds';
         document.getElementById('tel-iter-val').textContent = activePayload.iterations.toLocaleString() + ' Rounds';
+        document.getElementById('browser-url-text').textContent = 'vault://sample-report.enc.html';
+        relockVault();
         logToScreen('INIT', 'Switched to built-in sample vault payload.');
         fireToast('Sample Vault Loaded', 'sample-report.enc.html active.');
       } else {
@@ -1489,7 +1939,9 @@
               document.getElementById('disp-iv').textContent = parsed.iv;
               document.getElementById('disp-iter-badge').textContent = (parsed.iterations || 310000).toLocaleString() + ' Rounds';
               document.getElementById('tel-iter-val').textContent = (parsed.iterations || 310000).toLocaleString() + ' Rounds';
+              document.getElementById('browser-url-text').textContent = 'vault://' + file.name;
               document.getElementById('custom-dropzone-title').textContent = 'Loaded: ' + file.name;
+              relockVault();
               logToScreen('INIT', 'Successfully loaded custom payload from ' + file.name + ' (' + file.size + ' bytes).');
               fireToast('Payload Loaded', file.name);
               return;
@@ -1510,20 +1962,40 @@
       text.textContent = isHidden ? '▴ Hide Technical Parameters' : '▾ Technical Parameters';
     }
 
-    // Password Eye Toggle
+    // Synchronize Top Input and In-Sandbox Input
+    function syncPassInputs(val) {
+      const topInput = document.getElementById('pass-field');
+      const sandboxInput = document.getElementById('sandbox-pass-input');
+      if (topInput && topInput.value !== val) topInput.value = val;
+      if (sandboxInput && sandboxInput.value !== val) sandboxInput.value = val;
+      const topErr = document.getElementById('decrypt-error-banner');
+      if (topErr) topErr.style.display = 'none';
+      const sbErr = document.getElementById('sandbox-error-banner');
+      if (sbErr) sbErr.style.display = 'none';
+    }
+
+    // Password Eye Toggle for both Top Bar and In-Sandbox Card
     function togglePassView() {
       const p = document.getElementById('pass-field');
+      const sp = document.getElementById('sandbox-pass-input');
       const icon = document.getElementById('pass-eye-icon');
+      const sIcon = document.getElementById('sandbox-eye-icon');
       const isPwd = p.type === 'password';
-      p.type = isPwd ? 'text' : 'password';
-      icon.innerHTML = isPwd
+      const newType = isPwd ? 'text' : 'password';
+      p.type = newType;
+      if (sp) sp.type = newType;
+      const eyeSvg = isPwd
         ? '<line x1="1" y1="1" x2="23" y2="23"></line><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>'
         : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
+      if (icon) icon.innerHTML = eyeSvg;
+      if (sIcon) sIcon.innerHTML = eyeSvg;
     }
 
     function fillTestPassword() {
-      document.getElementById('pass-field').value = 'ConfidentialPass2026!';
+      syncPassInputs('ConfidentialPass2026!');
       document.getElementById('decrypt-error-banner').style.display = 'none';
+      const sbErr = document.getElementById('sandbox-error-banner');
+      if (sbErr) sbErr.style.display = 'none';
       logToScreen('INIT', 'Injected verified test passphrase: ConfidentialPass2026!');
       fireToast('Passphrase Inserted', 'Ready for decryption.');
     }
@@ -1548,16 +2020,13 @@
 
       if (state === 'active') {
         gate.classList.add('active');
-        // Animated spinner icon
         icon.innerHTML = '<path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"></path>';
         if (customDesc && desc) desc.textContent = customDesc;
       } else if (state === 'complete') {
         gate.classList.add('complete');
-        // Crisp checkmark icon
         icon.innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
         if (desc) desc.textContent = customDesc || 'Passed ✓';
       } else {
-        // Idle circle icon
         icon.innerHTML = '<circle cx="12" cy="12" r="9"></circle>';
         if (desc) desc.textContent = gateDefaultDescs[n - 1];
       }
@@ -1579,26 +2048,42 @@
       const pass = document.getElementById('pass-field').value;
       const errBanner = document.getElementById('decrypt-error-banner');
       const errLabel = document.getElementById('decrypt-error-label');
+      const sbErr = document.getElementById('sandbox-error-banner');
+      const sbErrText = document.getElementById('sandbox-error-text');
       const btn = document.getElementById('btn-execute-decrypt');
       const btnText = document.getElementById('btn-execute-text');
       const autoBtn = document.getElementById('btn-auto-run');
-      const viewport = document.getElementById('decrypted-viewport');
+      const sandboxBtn = document.getElementById('btn-sandbox-unlock');
+      const sandboxBtnText = document.getElementById('btn-sandbox-unlock-text');
+      
+      const lockScreen = document.getElementById('sandbox-lock-screen');
+      const frameWrap = document.getElementById('sandbox-frame-wrap');
       const iframe = document.getElementById('report-frame');
+
       const telStatusText = document.getElementById('tel-status-text');
       const telLatency = document.getElementById('tel-latency-val');
       const statusLabel = document.getElementById('pipeline-status-label');
 
       errBanner.style.display = 'none';
+      if (sbErr) sbErr.style.display = 'none';
 
       if (!pass) {
         errLabel.textContent = 'Please enter a passphrase to execute decryption.';
         errBanner.style.display = 'flex';
+        if (sbErr) {
+          sbErrText.textContent = 'Please enter a passphrase to derive the AES key.';
+          sbErr.style.display = 'flex';
+        }
         return;
       }
 
       resetPipeline();
       btn.disabled = true;
       if (autoBtn) autoBtn.disabled = true;
+      if (sandboxBtn) {
+        sandboxBtn.disabled = true;
+        sandboxBtnText.textContent = 'Decrypting in Memory...';
+      }
       btnText.textContent = 'Decrypting...';
 
       statusLabel.className = 'stepper-live-badge running';
@@ -1685,7 +2170,7 @@
 
         const latency = (performance.now() - tStart).toFixed(1);
         telLatency.textContent = latency + ' ms';
-        telStatusText.textContent = 'VERIFIED (IN RAM)';
+        telStatusText.textContent = 'UNLOCKED (RAM)';
         document.getElementById('tel-status-dot').style.background = '#10B981';
         document.getElementById('disp-status-badge').textContent = 'Unlocked';
         document.getElementById('disp-status-badge').className = 'doc-badge green';
@@ -1695,12 +2180,18 @@
 
         logToScreen('SUCCESS', 'Gate 04 passed: Reconstituted ' + (decryptedBuffer.byteLength / 1024).toFixed(1) + ' KB HTML document in volatile RAM in ' + latency + 'ms.');
 
-        // Render in Iframe Viewport
+        // Update Sandbox Browser Chrome Address Bar
+        document.getElementById('browser-url-text').textContent = 'ram://' + document.getElementById('payload-filename').textContent.replace('.enc.html', '.html');
+        document.getElementById('browser-url-badge').textContent = 'Volatile RAM • Verified';
+        document.getElementById('btn-browser-export').style.display = 'inline-flex';
+        document.getElementById('btn-browser-lock').style.display = 'inline-flex';
+
+        // Render in Sandbox Browser Viewport (Dissolve lock screen and display report)
         iframe.srcdoc = decText;
-        viewport.style.display = 'block';
-        document.getElementById('viewport-heading').textContent = '✓ Cryptographic Verification Report Decrypted (' + latency + 'ms • 0B Disk Footprint)';
-        
-        viewport.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        lockScreen.style.display = 'none';
+        frameWrap.style.display = 'block';
+
+        document.getElementById('sandbox-viewport').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         fireToast('Document Decrypted', 'Reconstituted in volatile RAM in ' + latency + 'ms.');
 
       } catch (err) {
@@ -1716,10 +2207,19 @@
         logToScreen('ERR', 'Cryptographic failure: Invalid passphrase or AES-GCM MAC tag mismatch.');
         errLabel.textContent = 'Incorrect password. AES-GCM authentication tag verification failed.';
         errBanner.style.display = 'flex';
+        const sbErr = document.getElementById('sandbox-error-banner');
+        if (sbErr) {
+          document.getElementById('sandbox-error-text').textContent = 'Authentication Tag Mismatch: Incorrect passphrase. AES-GCM MAC tag does not match ciphertext.';
+          sbErr.style.display = 'flex';
+        }
         fireToast('Decryption Failed', 'Invalid password or corrupted MAC tag.', 'error');
       } finally {
         btn.disabled = false;
         if (autoBtn) autoBtn.disabled = false;
+        if (sandboxBtn) {
+          sandboxBtn.disabled = false;
+          sandboxBtnText.textContent = 'Decrypt Document in Volatile RAM';
+        }
         btnText.textContent = 'Unlock Document';
       }
     }
@@ -1747,7 +2247,10 @@
 
     // Open Fullscreen in isolated tab
     function openFullscreenReport() {
-      if (!decryptedDocumentHtml) return;
+      if (!decryptedDocumentHtml) {
+        fireToast('Vault Locked', 'Please unlock the document before opening in new tab.', 'error');
+        return;
+      }
       const blob = new Blob([decryptedDocumentHtml], { type: 'text/html;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       window.open(url, '_blank');
@@ -1758,15 +2261,30 @@
     function relockVault() {
       decryptedDocumentHtml = null;
       document.getElementById('report-frame').srcdoc = '';
-      document.getElementById('decrypted-viewport').style.display = 'none';
-      document.getElementById('tel-status-text').textContent = 'READY';
-      document.getElementById('tel-status-dot').style.background = '#10B981';
+      
+      // Clear error alerts
+      const topErr = document.getElementById('decrypt-error-banner');
+      if (topErr) topErr.style.display = 'none';
+      const sbErr = document.getElementById('sandbox-error-banner');
+      if (sbErr) sbErr.style.display = 'none';
+
+      // Return browser window to authentic locked state
+      document.getElementById('sandbox-lock-screen').style.display = 'flex';
+      document.getElementById('sandbox-frame-wrap').style.display = 'none';
+
+      document.getElementById('browser-url-text').textContent = 'vault://' + document.getElementById('payload-filename').textContent;
+      document.getElementById('browser-url-badge').textContent = 'AES-256-GCM Locked';
+      document.getElementById('btn-browser-export').style.display = 'none';
+      document.getElementById('btn-browser-lock').style.display = 'none';
+
+      document.getElementById('tel-status-text').textContent = 'LOCKED';
+      document.getElementById('tel-status-dot').style.background = '#A1A1AA';
       document.getElementById('tel-latency-val').textContent = '-- ms';
       document.getElementById('disp-status-badge').textContent = 'Locked';
       document.getElementById('disp-status-badge').className = 'doc-badge';
       resetPipeline();
-      logToScreen('INIT', 'Memory zeroized. Decrypted document wiped from RAM.');
-      fireToast('Vault Locked', 'RAM wiped clean. Document re-locked.');
+      logToScreen('INIT', 'Memory zeroized. Document locked in sandbox browser.');
+      fireToast('Vault Locked', 'RAM wiped clean. Document sealed.');
     }
 
     // Tab 2: Packager
