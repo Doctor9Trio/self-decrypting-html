@@ -1,0 +1,24 @@
+{
+  "name": "self-decrypting-html",
+  "version": "1.0.0",
+  "description": "Zero-knowledge, self-decrypting standalone HTML documents using AES-256-GCM and PBKDF2 Web Crypto API.",
+  "type": "module",
+  "main": "bin/encrypt.mjs",
+  "bin": {
+    "encrypt-html": "./bin/encrypt.mjs"
+  },
+  "scripts": {
+    "demo": "node examples/generate-demo.mjs",
+    "encrypt": "node bin/encrypt.mjs"
+  },
+  "keywords": [
+    "encryption",
+    "aes-256-gcm",
+    "pbkdf2",
+    "webcrypto",
+    "zero-knowledge",
+    "html-vault"
+  ],
+  "author": "",
+  "license": "MIT"
+}
