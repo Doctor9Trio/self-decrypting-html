@@ -1,8 +1,8 @@
 import fs from 'fs';
 
 const payload = JSON.parse(fs.readFileSync('payload.json', 'utf8'));
-const logoBase64 = fs.readFileSync('logo.jpg').toString('base64');
-const logoDataUri = `data:image/jpeg;base64,${logoBase64}`;
+const logoBase64 = fs.readFileSync('logo.png').toString('base64');
+const logoDataUri = `data:image/png;base64,${logoBase64}`;
 
 // Safe script closer for standalone vault generator
 const SAFE_CLOSING_SCRIPT = '<' + '/script>';
@@ -13,7 +13,7 @@ const html = `<!DOCTYPE html>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HTML Document Vault • Client-Side Cryptographic Enclave</title>
-  <link rel="icon" type="image/jpeg" href="${logoDataUri}">
+  <link rel="icon" type="image/png" href="${logoDataUri}">
   
   <!-- Typography: Plus Jakarta Sans & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -92,19 +92,16 @@ const html = `<!DOCTYPE html>
     }
 
     .brand-logo {
-      width: 54px;
-      height: 54px;
-      border-radius: 14px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.04);
-      border: 1px solid var(--border);
-      background: #FFFFFF;
-      object-fit: cover;
-      transition: transform 0.25s var(--spring), box-shadow 0.25s var(--spring);
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.08));
+      transition: transform 0.25s var(--spring), filter 0.25s var(--spring);
     }
 
     .brand-logo:hover {
-      transform: translateY(-2px) scale(1.04);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      transform: translateY(-2px) scale(1.05);
+      filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.14));
     }
 
     .brand-pill {
