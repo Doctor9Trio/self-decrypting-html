@@ -247,6 +247,12 @@
       transform: scale(0.98);
     }
 
+    .btn-auto-run:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
     .btn-auto-run .play-icon {
       color: var(--accent-green);
     }
@@ -271,6 +277,7 @@
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
+      transition: all 0.2s ease;
     }
 
     .tel-label {
@@ -297,6 +304,7 @@
       height: 7px;
       border-radius: 50%;
       background: var(--fg-subtle);
+      transition: all 0.3s ease;
     }
 
     .status-dot.active {
@@ -465,7 +473,7 @@
       word-break: break-all;
     }
 
-    /* 4 Cryptographic Pipeline Gates */
+    /* 4 Cryptographic Pipeline Gates (Step-by-Step Flow) */
     .pipeline-section {
       margin-bottom: 1.5rem;
     }
@@ -474,12 +482,12 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 0.65rem;
+      margin-bottom: 0.75rem;
     }
 
     .pipeline-section-title {
       font-family: var(--font-mono);
-      font-size: 0.725rem;
+      font-size: 0.75rem;
       font-weight: 700;
       color: var(--fg-muted);
       text-transform: uppercase;
@@ -488,15 +496,26 @@
 
     .pipeline-status-text {
       font-family: var(--font-mono);
-      font-size: 0.725rem;
+      font-size: 0.75rem;
       font-weight: 600;
       color: var(--fg-muted);
+      transition: color 0.2s ease;
+    }
+
+    .pipeline-status-text.running {
+      color: var(--accent-amber);
+      font-weight: 700;
+    }
+
+    .pipeline-status-text.success {
+      color: var(--accent-green-text);
+      font-weight: 700;
     }
 
     .pipeline-gates {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 0.65rem;
+      gap: 0.75rem;
     }
 
     @media (max-width: 680px) {
@@ -507,21 +526,32 @@
       background: #FAFAFC;
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      padding: 0.85rem 1rem;
+      padding: 0.95rem 1rem;
       display: flex;
       flex-direction: column;
-      gap: 0.2rem;
-      transition: all 0.2s ease;
+      gap: 0.25rem;
+      position: relative;
+      transition: all 0.25s var(--spring);
     }
 
     .gate-card.active {
       border-color: var(--accent-amber);
       background: var(--accent-amber-bg);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.16);
     }
 
     .gate-card.complete {
       border-color: var(--accent-green-border);
       background: var(--accent-green-bg);
+      transform: translateY(0);
+      animation: popGate 0.3s var(--spring);
+    }
+
+    @keyframes popGate {
+      0% { transform: scale(0.96); }
+      50% { transform: scale(1.03); }
+      100% { transform: scale(1); }
     }
 
     .gate-top {
@@ -536,12 +566,22 @@
       font-weight: 700;
       color: var(--fg-muted);
       text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .gate-card.complete .gate-id {
+      color: var(--accent-green-text);
+    }
+
+    .gate-card.active .gate-id {
+      color: var(--accent-amber);
     }
 
     .gate-icon {
-      width: 14px;
-      height: 14px;
+      width: 16px;
+      height: 16px;
       color: var(--fg-subtle);
+      transition: all 0.2s ease;
     }
 
     .gate-card.complete .gate-icon {
@@ -550,18 +590,29 @@
 
     .gate-card.active .gate-icon {
       color: var(--accent-amber);
+      animation: spinGate 1s linear infinite;
+    }
+
+    @keyframes spinGate {
+      100% { transform: rotate(360deg); }
     }
 
     .gate-name {
-      font-size: 0.825rem;
+      font-size: 0.85rem;
       font-weight: 700;
       color: var(--fg);
     }
 
     .gate-desc {
       font-family: var(--font-mono);
-      font-size: 0.675rem;
+      font-size: 0.7rem;
       color: var(--fg-muted);
+      transition: color 0.2s ease;
+    }
+
+    .gate-card.complete .gate-desc {
+      color: var(--accent-green-text);
+      font-weight: 600;
     }
 
     /* Decryption Password Row */
@@ -682,7 +733,6 @@
       color: var(--accent-red);
       font-size: 0.825rem;
       font-weight: 600;
-      display: none;
       align-items: center;
       gap: 0.4rem;
     }
@@ -769,7 +819,7 @@
     .t-tag.SUCCESS { color: #34D399; }
     .t-tag.ERR { color: #F87171; }
 
-    /* Decrypted Document Viewport */
+    /* Decrypted Document Viewport (Clean, full responsive width, no device tabs) */
     .viewport-box {
       display: none;
       border: 1px solid var(--accent-green-border);
@@ -777,12 +827,12 @@
       background: #FFFFFF;
       overflow: hidden;
       margin-top: 2rem;
-      box-shadow: 0 4px 24px -2px rgba(16, 185, 129, 0.12);
-      animation: viewportSlide 0.35s var(--spring);
+      box-shadow: 0 6px 30px -4px rgba(16, 185, 129, 0.14);
+      animation: viewportSlide 0.4s var(--spring);
     }
 
     @keyframes viewportSlide {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(24px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
@@ -792,7 +842,7 @@
       align-items: center;
       background: #F8FDF9;
       border-bottom: 1px solid var(--accent-green-border);
-      padding: 0.85rem 1.25rem;
+      padding: 0.95rem 1.35rem;
       flex-wrap: wrap;
       gap: 0.75rem;
     }
@@ -801,38 +851,9 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      font-size: 0.85rem;
+      font-size: 0.875rem;
       font-weight: 700;
       color: var(--accent-green-text);
-    }
-
-    .device-controls {
-      display: inline-flex;
-      background: #FFFFFF;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 0.2rem;
-      gap: 0.2rem;
-    }
-
-    .device-btn {
-      padding: 0.35rem 0.75rem;
-      border: none;
-      background: transparent;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--fg-muted);
-      border-radius: 4px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      transition: all 0.15s ease;
-    }
-
-    .device-btn.active {
-      background: var(--primary);
-      color: #FFFFFF;
     }
 
     .viewport-buttons {
@@ -844,11 +865,11 @@
     .btn-vaction {
       display: inline-flex;
       align-items: center;
-      gap: 0.35rem;
+      gap: 0.4rem;
       font-family: var(--font-sans);
-      font-size: 0.775rem;
+      font-size: 0.8rem;
       font-weight: 600;
-      padding: 0.4rem 0.75rem;
+      padding: 0.45rem 0.85rem;
       border-radius: var(--radius-sm);
       border: 1px solid var(--border);
       background: #FFFFFF;
@@ -862,28 +883,29 @@
       border-color: #D4D4D8;
     }
 
+    .btn-vaction.danger:hover {
+      background: #FEF2F2;
+      border-color: #FECACA;
+      color: var(--accent-red);
+    }
+
     .iframe-container {
       background: #F4F4F6;
-      padding: 1.5rem;
+      padding: 1.25rem;
       display: flex;
       justify-content: center;
       align-items: flex-start;
       min-height: 520px;
-      overflow-x: auto;
     }
 
     .sandboxed-frame {
       width: 100%;
-      height: 680px;
+      height: 720px;
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
       background: #FFFFFF;
       box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-      transition: width 0.3s var(--spring);
     }
-
-    .sandboxed-frame.tablet { width: 768px; }
-    .sandboxed-frame.mobile { width: 375px; }
 
     /* Custom File Dropzone (Tab 1 / Custom mode) */
     .custom-dropzone-box {
@@ -995,7 +1017,7 @@
 
     @keyframes sonnerIn {
       from { opacity: 0; transform: translateY(12px) scale(0.96); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .sonner-toast.success .s-icon { color: #34D399; }
@@ -1134,7 +1156,7 @@
           </div>
         </div>
 
-        <!-- 4 Pipeline Gates -->
+        <!-- 4 Cryptographic Pipeline Gates (Step-by-Step Flow) -->
         <div class="pipeline-section">
           <div class="pipeline-section-header">
             <span class="pipeline-section-title">Cryptographic Pipeline Gates</span>
@@ -1145,37 +1167,37 @@
             <div id="gate-1" class="gate-card">
               <div class="gate-top">
                 <span class="gate-id">Gate 01</span>
-                <svg id="gate-icon-1" class="gate-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg>
+                <svg id="gate-icon-1" class="gate-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"></circle></svg>
               </div>
               <div class="gate-name">Entropy Verification</div>
-              <div class="gate-desc">16B Salt + 12B IV</div>
+              <div class="gate-desc" id="gate-desc-1">16B Salt + 12B IV</div>
             </div>
 
             <div id="gate-2" class="gate-card">
               <div class="gate-top">
                 <span class="gate-id">Gate 02</span>
-                <svg id="gate-icon-2" class="gate-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg>
+                <svg id="gate-icon-2" class="gate-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"></circle></svg>
               </div>
               <div class="gate-name">PBKDF2 Key Stretch</div>
-              <div class="gate-desc">310k HMAC-SHA256</div>
+              <div class="gate-desc" id="gate-desc-2">310k HMAC-SHA256</div>
             </div>
 
             <div id="gate-3" class="gate-card">
               <div class="gate-top">
                 <span class="gate-id">Gate 03</span>
-                <svg id="gate-icon-3" class="gate-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg>
+                <svg id="gate-icon-3" class="gate-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"></circle></svg>
               </div>
               <div class="gate-name">AES-GCM Auth Check</div>
-              <div class="gate-desc">128-bit MAC Tag Match</div>
+              <div class="gate-desc" id="gate-desc-3">128-bit MAC Tag Match</div>
             </div>
 
             <div id="gate-4" class="gate-card">
               <div class="gate-top">
                 <span class="gate-id">Gate 04</span>
-                <svg id="gate-icon-4" class="gate-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg>
+                <svg id="gate-icon-4" class="gate-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"></circle></svg>
               </div>
               <div class="gate-name">RAM Reconstitution</div>
-              <div class="gate-desc">0B Disk Footprint</div>
+              <div class="gate-desc" id="gate-desc-4">0B Disk Footprint</div>
             </div>
           </div>
         </div>
@@ -1226,17 +1248,12 @@
           </div>
         </div>
 
-        <!-- Decrypted Report Viewport (Appears smoothly upon decryption) -->
+        <!-- Decrypted Report Viewport (Clean, Full Responsive Width) -->
         <div id="decrypted-viewport" class="viewport-box">
           <div class="viewport-header">
             <div class="viewport-status-badge">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              <span id="viewport-heading">Decrypted Report Reconstituted in RAM</span>
-            </div>
-            <div class="device-controls">
-              <button id="dev-desktop" class="device-btn active" onclick="setFrameDevice('desktop')">Desktop</button>
-              <button id="dev-tablet" class="device-btn" onclick="setFrameDevice('tablet')">Tablet</button>
-              <button id="dev-mobile" class="device-btn" onclick="setFrameDevice('mobile')">Mobile</button>
+              <span id="viewport-heading">✓ Cryptographic Verification Report Decrypted</span>
             </div>
             <div class="viewport-buttons">
               <button class="btn-vaction" onclick="downloadDecryptedHtml()">
@@ -1247,7 +1264,7 @@
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                 Full Screen
               </button>
-              <button class="btn-vaction" onclick="relockVault()">
+              <button class="btn-vaction danger" onclick="relockVault()">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                 Lock & Wipe RAM
               </button>
@@ -1361,6 +1378,9 @@
     let activePayload = DEFAULT_PAYLOAD;
     let decryptedDocumentHtml = null;
     let rawHtmlToPackage = null;
+
+    // Small async sleep helper for visual smoothness in UI pipeline
+    const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
     // Toast Functionality
     function fireToast(title, subtitle, type = 'success') {
@@ -1493,33 +1513,53 @@
       fireToast('Passphrase Inserted', 'Ready for decryption.');
     }
 
-    // Gate Helpers
-    function setGate(n, state) {
+    // Gate State Helper
+    const gateDefaultDescs = [
+      '16B Salt + 12B IV',
+      '310k HMAC-SHA256',
+      '128-bit MAC Tag Match',
+      '0B Disk Footprint'
+    ];
+
+    function setGate(n, state, customDesc = null) {
       const gate = document.getElementById('gate-' + n);
       const icon = document.getElementById('gate-icon-' + n);
+      const desc = document.getElementById('gate-desc-' + n);
       if (!gate) return;
+
       gate.classList.remove('active', 'complete');
+      gate.style.borderColor = '';
+      gate.style.background = '';
+
       if (state === 'active') {
         gate.classList.add('active');
+        // Animated spinner icon
         icon.innerHTML = '<path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"></path>';
+        if (customDesc && desc) desc.textContent = customDesc;
       } else if (state === 'complete') {
         gate.classList.add('complete');
+        // Crisp checkmark icon
         icon.innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
+        if (desc) desc.textContent = customDesc || 'Passed ✓';
       } else {
-        icon.innerHTML = '<circle cx="12" cy="12" r="10"></circle>';
+        // Idle circle icon
+        icon.innerHTML = '<circle cx="12" cy="12" r="9"></circle>';
+        if (desc) desc.textContent = gateDefaultDescs[n - 1];
       }
     }
 
     function resetPipeline() {
       for (let i = 1; i <= 4; i++) setGate(i, 'idle');
-      document.getElementById('pipeline-status-label').textContent = 'Ready for execution';
+      const label = document.getElementById('pipeline-status-label');
+      label.textContent = 'Ready for execution';
+      label.className = 'pipeline-status-text';
     }
 
     // Base64 helpers
     const toBytes = (b) => Uint8Array.from(atob(b), c => c.charCodeAt(0));
     const toBase64 = (arr) => btoa(String.fromCharCode(...arr));
 
-    // Core Decryption Function
+    // Core Decryption Function with Sequential Smooth Step Progression
     async function executeDecryption() {
       const pass = document.getElementById('pass-field').value;
       const errBanner = document.getElementById('decrypt-error-banner');
@@ -1531,6 +1571,7 @@
       const iframe = document.getElementById('report-frame');
       const telStatusText = document.getElementById('tel-status-text');
       const telLatency = document.getElementById('tel-latency-val');
+      const statusLabel = document.getElementById('pipeline-status-label');
 
       errBanner.style.display = 'none';
 
@@ -1544,13 +1585,17 @@
       btn.disabled = true;
       if (autoBtn) autoBtn.disabled = true;
       btnText.textContent = 'Executing Cryptographic Pipeline...';
-      document.getElementById('pipeline-status-label').textContent = 'Executing pipeline...';
+
+      statusLabel.className = 'pipeline-status-text running';
+      statusLabel.textContent = 'Executing Gate 01: Verifying Entropy...';
 
       const tStart = performance.now();
 
       try {
-        // Gate 01: Entropy Verification
-        setGate(1, 'active');
+        // ==========================================
+        // STEP 1: GATE 01 - ENTROPY VERIFICATION
+        // ==========================================
+        setGate(1, 'active', 'Verifying Salt & IV...');
         logToScreen('INIT', 'Reading parameters: Salt, IV, and ciphertext payload...');
         const enc = new TextEncoder();
         const salt = toBytes(activePayload.salt);
@@ -1561,12 +1606,19 @@
         if (salt.length !== 16 || iv.length !== 12) {
           throw new Error('Invalid salt or IV length');
         }
-        setGate(1, 'complete');
-        logToScreen('INIT', 'Gate 01 passed: Entropy verified (16B Salt, 12B IV).');
 
-        // Gate 02: PBKDF2 Key Stretching
-        setGate(2, 'active');
+        // Smooth human-perceptible pause for visual step 1
+        await sleep(350);
+        setGate(1, 'complete', '16B Salt + 12B IV Verified ✓');
+        logToScreen('INIT', 'Gate 01 passed: Entropy verified (16-byte Salt, 12-byte IV).');
+
+        // ==========================================
+        // STEP 2: GATE 02 - PBKDF2 KEY STRETCHING
+        // ==========================================
+        statusLabel.textContent = 'Executing Gate 02: PBKDF2 Key Stretching (' + iterations.toLocaleString() + ' rounds)...';
+        setGate(2, 'active', 'Deriving 256-bit Key...');
         logToScreen('KDF', 'Importing passphrase into PBKDF2 key material...');
+
         const keyMaterial = await crypto.subtle.importKey(
           'raw',
           enc.encode(pass),
@@ -1583,31 +1635,50 @@
           false,
           ['decrypt']
         );
-        setGate(2, 'complete');
-        logToScreen('KDF', 'Gate 02 passed: 256-bit AES master key derived successfully.');
 
-        // Gate 03: AES-256-GCM Auth Check
-        setGate(3, 'active');
+        // Smooth pause for visual step 2
+        await sleep(400);
+        setGate(2, 'complete', iterations.toLocaleString() + ' Rounds Complete ✓');
+        logToScreen('KDF', 'Gate 02 passed: 256-bit AES master key derived. (extractable: false)');
+
+        // ==========================================
+        // STEP 3: GATE 03 - AES-GCM AUTH CHECK
+        // ==========================================
+        statusLabel.textContent = 'Executing Gate 03: Authenticating AES-256-GCM MAC Tag...';
+        setGate(3, 'active', 'Checking 128-bit MAC Tag...');
         logToScreen('CIPHER', 'Submitting ' + cipher.length + ' bytes to AES-256-GCM cipher...');
+
         const decryptedBuffer = await crypto.subtle.decrypt(
           { name: 'AES-GCM', iv },
           key,
           cipher
         );
-        setGate(3, 'complete');
+
+        // Smooth pause for visual step 3
+        await sleep(350);
+        setGate(3, 'complete', '128-bit Tag Match Verified ✓');
         logToScreen('CIPHER', 'Gate 03 passed: 128-bit MAC tag verified. Cryptographic authentication successful.');
 
-        // Gate 04: RAM Reconstitution
-        setGate(4, 'active');
+        // ==========================================
+        // STEP 4: GATE 04 - RAM RECONSTITUTION
+        // ==========================================
+        statusLabel.textContent = 'Executing Gate 04: Reconstituting HTML in Volatile RAM...';
+        setGate(4, 'active', 'Injecting into RAM...');
+
         const decText = new TextDecoder().decode(decryptedBuffer);
         decryptedDocumentHtml = decText;
-        setGate(4, 'complete');
+
+        // Smooth pause for visual step 4
+        await sleep(300);
+        setGate(4, 'complete', (decryptedBuffer.byteLength / 1024).toFixed(1) + ' KB Reconstituted ✓');
 
         const latency = (performance.now() - tStart).toFixed(1);
         telLatency.textContent = latency + ' ms';
         telStatusText.textContent = 'VERIFIED (IN RAM)';
         document.getElementById('tel-status-dot').style.background = '#10B981';
-        document.getElementById('pipeline-status-label').textContent = 'Pipeline execution completed (4/4 gates passed)';
+
+        statusLabel.className = 'pipeline-status-text success';
+        statusLabel.textContent = 'Pipeline execution completed (4/4 gates passed)';
 
         logToScreen('SUCCESS', 'Gate 04 passed: Reconstituted ' + (decryptedBuffer.byteLength / 1024).toFixed(1) + ' KB HTML document in volatile RAM in ' + latency + 'ms.');
 
@@ -1620,10 +1691,12 @@
         fireToast('Document Decrypted', 'Reconstituted in volatile RAM in ' + latency + 'ms.');
 
       } catch (err) {
-        setGate(3, 'active');
+        setGate(3, 'active', 'Authentication Failure');
         document.getElementById('gate-3').style.borderColor = '#EF4444';
         document.getElementById('gate-3').style.background = '#FEF2F2';
-        document.getElementById('pipeline-status-label').textContent = 'Execution halted on authentication error.';
+        statusLabel.className = 'pipeline-status-text';
+        statusLabel.textContent = 'Execution halted on authentication error.';
+        statusLabel.style.color = '#EF4444';
         telStatusText.textContent = 'FAILED (TAG MISMATCH)';
         document.getElementById('tel-status-dot').style.background = '#EF4444';
         
@@ -1638,21 +1711,12 @@
       }
     }
 
-    // 1-Click Auto Run Feature
+    // 1-Click Auto Run Feature with Smooth Visual Transition
     async function oneClickAutoRun() {
       setVaultSource('builtin');
       fillTestPassword();
-      logToScreen('INIT', '1-Click Auto Run triggered by user. Executing full pipeline...');
+      logToScreen('INIT', '1-Click Auto Run triggered by user. Starting sequential gate execution...');
       await executeDecryption();
-    }
-
-    // Device Frame Viewport
-    function setFrameDevice(dev) {
-      const frame = document.getElementById('report-frame');
-      ['desktop', 'tablet', 'mobile'].forEach(d => {
-        document.getElementById('dev-' + d).classList.toggle('active', d === dev);
-        frame.classList.toggle(d, d === dev);
-      });
     }
 
     // Download Decrypted HTML
