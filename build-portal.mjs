@@ -29,10 +29,10 @@ const html = `<!DOCTYPE html>
       --primary: #18181B;
       --primary-hover: #27272A;
       --primary-fg: #FAFAFA;
-      --accent-green: #10B981;
-      --accent-green-bg: #ECFDF5;
-      --accent-green-border: #A7F3D0;
-      --accent-green-text: #065F46;
+      --accent-green: #18181B;
+      --accent-green-bg: #F4F4F6;
+      --accent-green-border: #E4E4E7;
+      --accent-green-text: #18181B;
       --accent-blue: #3B82F6;
       --accent-blue-bg: #EFF6FF;
       --accent-amber: #F59E0B;
@@ -97,8 +97,7 @@ const html = `<!DOCTYPE html>
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      background: var(--accent-green);
-      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+      background: var(--fg);
     }
 
     h1 {
@@ -276,8 +275,7 @@ const html = `<!DOCTYPE html>
     }
 
     .status-dot.active {
-      background: var(--accent-green);
-      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+      background: #18181B;
     }
 
     /* Vault Source Switcher */
@@ -376,10 +374,10 @@ const html = `<!DOCTYPE html>
       color: var(--fg-muted);
     }
 
-    .doc-badge.green {
-      background: var(--accent-green-bg);
-      border-color: var(--accent-green-border);
-      color: var(--accent-green-text);
+    .doc-badge.unlocked {
+      background: #F4F4F6;
+      border-color: #D4D4D8;
+      color: #18181B;
     }
 
     .btn-meta-toggle {
@@ -649,7 +647,7 @@ const html = `<!DOCTYPE html>
     }
 
     .stepper-live-badge.complete {
-      color: var(--accent-green-text);
+      color: var(--fg);
       font-weight: 700;
     }
 
@@ -684,10 +682,10 @@ const html = `<!DOCTYPE html>
     }
 
     .step-card.complete {
-      border-color: var(--accent-green-border);
-      background: var(--accent-green-bg);
+      border-color: #18181B;
+      background: #FFFFFF;
       transform: translateY(0);
-      animation: popGate 0.3s var(--spring);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     }
 
     @keyframes popGate {
@@ -712,7 +710,7 @@ const html = `<!DOCTYPE html>
     }
 
     .step-card.active .step-num-pill { color: var(--accent-amber); }
-    .step-card.complete .step-num-pill { color: var(--accent-green-text); }
+    .step-card.complete .step-num-pill { color: #18181B; }
 
     .step-icon {
       width: 16px;
@@ -730,9 +728,7 @@ const html = `<!DOCTYPE html>
       100% { transform: rotate(360deg); }
     }
 
-    .step-card.complete .step-icon {
-      color: var(--accent-green);
-    }
+    .step-card.complete .step-icon { color: #18181B; }
 
     .step-title {
       font-size: 0.875rem;
@@ -747,10 +743,7 @@ const html = `<!DOCTYPE html>
       transition: color 0.2s ease;
     }
 
-    .step-card.complete .step-status {
-      color: var(--accent-green-text);
-      font-weight: 600;
-    }
+    .step-card.complete .step-status { color: #18181B; font-weight: 600; }
 
     /* Live Telemetry Terminal */
     .terminal-wrapper {
@@ -894,7 +887,7 @@ const html = `<!DOCTYPE html>
     }
 
     .url-lock-icon {
-      color: var(--accent-green);
+      color: #18181B;
       flex-shrink: 0;
     }
 
@@ -907,12 +900,13 @@ const html = `<!DOCTYPE html>
 
     .url-badge {
       font-size: 0.65rem;
-      font-weight: 700;
-      background: var(--accent-green-bg);
-      color: var(--accent-green-text);
-      border: 1px solid var(--accent-green-border);
-      padding: 0.1rem 0.45rem;
-      border-radius: 9999px;
+      font-weight: 600;
+      font-family: var(--font-mono);
+      background: #F4F4F5;
+      color: #52525B;
+      border: 1px solid var(--border);
+      padding: 0.12rem 0.5rem;
+      border-radius: 4px;
       white-space: nowrap;
     }
 
@@ -1212,16 +1206,28 @@ const html = `<!DOCTYPE html>
       font-size: 0.775rem;
     }
 
-    .frame-status-pill {
+    .frame-doc-info {
       display: inline-flex;
       align-items: center;
-      gap: 0.45rem;
+      gap: 0.5rem;
+      font-size: 0.775rem;
+      color: var(--fg);
+    }
+    .frame-doc-title {
       font-weight: 600;
-      color: var(--accent-green-text);
-      background: var(--accent-green-bg);
-      border: 1px solid var(--accent-green-border);
-      padding: 0.25rem 0.65rem;
-      border-radius: 9999px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--fg);
+    }
+    .frame-doc-tag {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 500;
+      color: var(--fg-muted);
+      background: #F4F4F5;
+      border: 1px solid var(--border);
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
     }
 
     .frame-actions-row {
@@ -1351,7 +1357,7 @@ const html = `<!DOCTYPE html>
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    .sonner-toast.success .s-icon { color: #34D399; }
+    .sonner-toast.success .s-icon { color: #18181B; }
     .sonner-toast.error .s-icon { color: #F87171; }
   </style>
 </head>
@@ -1452,7 +1458,7 @@ const html = `<!DOCTYPE html>
               <div class="doc-name-group">
                 <h3 id="payload-filename">sample-report.enc.html</h3>
                 <div class="doc-badges">
-                  <span class="doc-badge green">AES-256-GCM</span>
+                  <span class="doc-badge">AES-256-GCM</span>
                   <span class="doc-badge" id="payload-filesize">18.42 KB</span>
                   <span class="doc-badge" id="disp-iter-badge">310,000 Rounds</span>
                   <span class="doc-badge" id="disp-status-badge">Locked</span>
@@ -1479,7 +1485,7 @@ const html = `<!DOCTYPE html>
               </div>
               <div class="meta-item">
                 <span class="meta-lbl">Shannon Entropy</span>
-                <span class="meta-val" style="color: #10B981;">~7.98 bits/byte (High Noise)</span>
+                <span class="meta-val">~7.98 bits/byte (High Noise)</span>
               </div>
             </div>
             <div class="hex-box">00000000: 48 33 77 47 44 79 54 44 4F 70 33 77 61 38 5A 69 H3wGDyTDOp3wa8Zi 00000010: 52 2B 65 6C 68 52 33 45 43 6C 46 5A 44 4B 41 48 R+elhR3EClFZDKAH 00000020: 44 71 53 33 6D 58 72 36 32 59 62 76 77 58 33 75 DqS3mXr62YbvwX3u ... [12,183 bytes encrypted AES-GCM payload with embedded 16-byte MAC authentication tag]</div>
@@ -1641,7 +1647,7 @@ const html = `<!DOCTYPE html>
                     </div>
                   </div>
                   <span class="sandbox-secure-badge">
-                    <span style="width:6px; height:6px; border-radius:50%; background:#10B981;"></span>
+                    <span style="width:6px; height:6px; border-radius:50%; background:#18181B;"></span>
                     Zero-Knowledge
                   </span>
                 </div>
@@ -1649,20 +1655,20 @@ const html = `<!DOCTYPE html>
                 <!-- Cryptographic Hardness Explanation (User Request) -->
                 <div class="crypto-guarantee-box">
                   <div class="crypto-guarantee-box-title">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--accent-green);"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--fg);"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                     <span>Cryptographic Security Guarantee</span>
                   </div>
                   <ul class="crypto-guarantee-list">
                     <li>
-                      <span style="color:var(--accent-green); font-weight:700;">•</span>
+                      <span style="color:var(--fg-muted); font-weight:700;">•</span>
                       <span><strong>AES-256-GCM Cipher:</strong> Symmetric 256-bit Galois/Counter Mode encryption guarantees both confidential secrecy and authentic document integrity.</span>
                     </li>
                     <li>
-                      <span style="color:var(--accent-green); font-weight:700;">•</span>
+                      <span style="color:var(--fg-muted); font-weight:700;">•</span>
                       <span><strong>310,000 PBKDF2 Iterations:</strong> Key derivation purposefully demands high compute cycles, rendering brute-force or dictionary cracking computationally infeasible.</span>
                     </li>
                     <li>
-                      <span style="color:var(--accent-green); font-weight:700;">•</span>
+                      <span style="color:var(--fg-muted); font-weight:700;">•</span>
                       <span><strong>No Server Backdoor:</strong> Without this exact passphrase, the 128-bit MAC tag check fails instantly. No plain text touches disk or leaves local RAM.</span>
                     </li>
                   </ul>
@@ -1713,9 +1719,10 @@ const html = `<!DOCTYPE html>
             <!-- STATE B: THE DECRYPTED DOCUMENT IFRAME -->
             <div class="sandbox-frame-wrap" id="sandbox-frame-wrap">
               <div class="sandbox-frame-topbar">
-                <div class="frame-status-pill">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                  <span id="frame-status-text">Cryptographic Verification Report • Unlocked in RAM</span>
+                <div class="frame-doc-info">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                  <span id="frame-status-text" class="frame-doc-title">sample-report.html</span>
+                  <span class="frame-doc-tag">Volatile RAM</span>
                 </div>
                 <div class="frame-actions-row">
                   <button class="browser-action-btn" onclick="openFullscreenReport()">
@@ -2178,9 +2185,9 @@ const html = `<!DOCTYPE html>
         const latency = (performance.now() - tStart).toFixed(1);
         telLatency.textContent = latency + ' ms';
         telStatusText.textContent = 'UNLOCKED (RAM)';
-        document.getElementById('tel-status-dot').style.background = '#10B981';
+        document.getElementById('tel-status-dot').style.background = '#18181B';
         document.getElementById('disp-status-badge').textContent = 'Unlocked';
-        document.getElementById('disp-status-badge').className = 'doc-badge green';
+        document.getElementById('disp-status-badge').className = 'doc-badge';
 
         statusLabel.className = 'stepper-live-badge complete';
         statusLabel.textContent = 'Pipeline execution complete (4/4 gates passed)';
