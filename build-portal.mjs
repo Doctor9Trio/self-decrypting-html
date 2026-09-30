@@ -944,7 +944,7 @@ const html = `<!DOCTYPE html>
 
     /* Sandbox Viewport Area */
     .sandbox-viewport {
-      min-height: 580px;
+      min-height: 540px;
       position: relative;
       background: #F8F9FA;
       display: flex;
@@ -1229,15 +1229,9 @@ const html = `<!DOCTYPE html>
       border-radius: 4px;
     }
 
-    .frame-actions-row {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-
     .sandboxed-frame {
       width: 100%;
-      height: 720px;
+      height: 540px;
       border: none;
       background: #FFFFFF;
       display: block;
