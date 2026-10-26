@@ -8,6 +8,7 @@
     "encrypt-html": "./bin/encrypt.mjs"
   },
   "scripts": {
+    "start": "node bin/serve.mjs",
     "demo": "node examples/generate-demo.mjs",
     "encrypt": "node bin/encrypt.mjs"
   },

@@ -4,8 +4,6 @@ const payload = JSON.parse(fs.readFileSync('payload.json', 'utf8'));
 const logoBase64 = fs.readFileSync('logo.png').toString('base64');
 const logoDataUri = `data:image/png;base64,${logoBase64}`;
 
-// Safe script closer for standalone vault generator
-const SAFE_CLOSING_SCRIPT = '<' + '/script>';
 
 const html = `<!DOCTYPE html>
 <html lang="en">
@@ -2434,7 +2432,7 @@ const html = `<!DOCTYPE html>
 '        document.open(); document.write(new TextDecoder().decode(dec)); document.close();\\n' +
 '      } catch(err) { e.style.display = "block"; }\\n' +
 '    }\\n' +
-'  ' + SAFE_CLOSING_SCRIPT + '\\n' +
+'  <\' + \'/script>\\n' +
 '</body>\\n' +
 '</html>';
     }
@@ -2444,4 +2442,5 @@ const html = `<!DOCTYPE html>
 
 fs.writeFileSync('index.html', html, 'utf8');
 fs.writeFileSync('web/index.html', html, 'utf8');
-console.log('Build complete! Successfully wrote sandbox browser window architecture to index.html and web/index.html.');
+fs.writeFileSync('demo.html', html, 'utf8');
+console.log('Build complete! Successfully wrote sandbox browser window architecture to index.html, web/index.html, and demo.html.');
